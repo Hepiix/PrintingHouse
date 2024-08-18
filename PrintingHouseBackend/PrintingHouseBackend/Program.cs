@@ -1,11 +1,18 @@
 using PrintingHouseBackend.Components;
+using PrintingHouseBackend.Data;
+using Microsoft.EntityFrameworkCore;
+using PrintingHouseBackend.EndPoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorComponents();
+var connString = builder.Configuration.GetConnectionString("PrintingHouse");
+builder.Services.AddDbContext<PrintingHouseContext>(options =>
+    options.UseSqlServer(connString));
 
 var app = builder.Build();
+app.MapCustomersEndpoints();
+app.MapJobDetailsEndpoints();
+app.MapJobOrdersEndpoints();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -14,12 +21,4 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
-app.UseHttpsRedirection();
-
-app.UseStaticFiles();
-app.UseAntiforgery();
-
-app.MapRazorComponents<App>();
-
 app.Run();

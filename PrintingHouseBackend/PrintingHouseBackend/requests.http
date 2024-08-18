@@ -1,0 +1,7 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+GET http://localhost:5140/customers
+###
+GET http://localhost:5140/jobsorders
+###
+GET http://localhost:5140/jobsdetails
+###
