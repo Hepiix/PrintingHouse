@@ -22,8 +22,8 @@ public class PrintingHouseContext(DbContextOptions<PrintingHouseContext> options
             new { Id = 3, Name = "RP. Peaches", Pattern = "rpp1" });
 
         modelBuilder.Entity<JobOrder>().HasData(
-            new { Id = 1, CustomerId = 1, OrderDate = new DateOnly(2024,2,12), Status = false },
-            new { Id = 2, CustomerId = 2, OrderDate = new DateOnly(2024,6,1), Status = false },
-            new { Id = 3, CustomerId = 3, OrderDate = new DateOnly(2023,7,27), Status = true });
+            new { Id = 1, CustomerId = 1, JobDetailsId = 1, OrderDate = new DateOnly(2024,2,12), Status = false },
+            new { Id = 2, CustomerId = 2, JobDetailsId = 2, OrderDate = new DateOnly(2024,6,1), Status = false },
+            new { Id = 3, CustomerId = 3, JobDetailsId = 3, OrderDate = new DateOnly(2023,7,27), Status = true });
     }
 }
