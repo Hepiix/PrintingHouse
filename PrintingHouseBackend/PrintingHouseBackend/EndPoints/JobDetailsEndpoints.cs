@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PrintingHouseBackend.Data;
+using PrintingHouseBackend.Dtos.JobDetails;
+using PrintingHouseBackend.Mapping;
 using PrintingHouseBackend.Models;
 
 namespace PrintingHouseBackend.EndPoints;
@@ -26,6 +28,40 @@ public static class JobDetailsEndpoints
         })
             .WithName(GetJobDetailsEndpointName);
 
+        // POST /jobsdetails
+        group.MapPost("/", async (CreateJobDetailsDto newJobDetails, PrintingHouseContext dbContext) =>
+        {
+            JobDetails jobDetails = newJobDetails.ToEntity();
+            dbContext.JobsDetails.Add(jobDetails);
+            await dbContext.SaveChangesAsync();
+
+            return Results.CreatedAtRoute(GetJobDetailsEndpointName, new { id = jobDetails.Id }, jobDetails);
+        });
+
+        // DELETE /jobsdetails/1
+        group.MapDelete("/{id}", async (int id, PrintingHouseContext dbContext) =>
+        {
+            await dbContext.JobsDetails.Where(jobDetails => jobDetails.Id == id)
+                .ExecuteDeleteAsync();
+
+            return Results.NoContent();
+        });
+
+        // PUT /jobsdetails/1
+        group.MapPut("/{id}", async (int id, UpdatedJobDetailsDto updatedJobDetails, PrintingHouseContext dbContext) =>
+        {
+            var existingJobDetails = await dbContext.JobsDetails.FindAsync(id);
+
+            if (existingJobDetails is null)
+                return Results.NotFound();
+
+            dbContext.Entry(existingJobDetails)
+                .CurrentValues
+                .SetValues(updatedJobDetails.ToEntity(id));
+
+            await dbContext.SaveChangesAsync();
+            return Results.NoContent();
+        });
         return group;
     }
 }

@@ -1,15 +1,7 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
 GET http://localhost:5140/customers
 ###
-GET http://localhost:5140/jobsorders
-###
-GET http://localhost:5140/jobsdetails
-###
 GET http://localhost:5140/customers/1
-###
-GET http://localhost:5140/jobsorders/1
-###
-GET http://localhost:5140/jobsdetails/1
 ###
 POST http://localhost:5140/customers
 Content-Type: application/json
@@ -30,3 +22,31 @@ Content-Type: application/json
   "company": "Burger Chef",
   "phonenumber": "4438890099"
 }
+###
+GET http://localhost:5140/jobsorders
+###
+GET http://localhost:5140/jobsdetails
+###
+GET http://localhost:5140/jobsdetails/1
+###
+POST http://localhost:5140/jobsdetails
+Content-Type: application/json
+{
+  "name": "MB. Burger Chef",
+  "pattern": "mbbc10"
+
+}
+###
+DELETE http://localhost:5140/jobsdetails/3
+###
+PUT http://localhost:5140/jobsdetails/2
+Content-Type: application/json
+{
+  "name": "MB. Burger Chef",
+  "pattern": "mbbc10"
+
+}
+###
+GET http://localhost:5140/jobsorders/1
+###
+
