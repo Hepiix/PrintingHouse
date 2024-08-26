@@ -1,4 +1,4 @@
-﻿using PrintingHouseBackend.Dtos.JobDetails;
+﻿using PrintingHouseBackend.Dtos.JobDetailsDtos;
 using PrintingHouseBackend.Models;
 
 namespace PrintingHouseBackend.Mapping;

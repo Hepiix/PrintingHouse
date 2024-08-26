@@ -1,4 +1,4 @@
-﻿namespace PrintingHouseBackend.Dtos.JobDetails;
+﻿namespace PrintingHouseBackend.Dtos.JobDetailsDtos;
 
 public record class CreateJobDetailsDto(
     string Name,

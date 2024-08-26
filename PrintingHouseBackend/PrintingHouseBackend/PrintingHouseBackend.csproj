@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\JobOrder\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PrintingHouseBackend.Data;
-using PrintingHouseBackend.Dtos.JobDetails;
+using PrintingHouseBackend.Dtos.JobDetailsDtos;
 using PrintingHouseBackend.Mapping;
 using PrintingHouseBackend.Models;
 

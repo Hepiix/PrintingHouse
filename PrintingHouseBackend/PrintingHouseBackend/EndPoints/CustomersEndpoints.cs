@@ -2,7 +2,7 @@
 using PrintingHouseBackend.Data;
 using PrintingHouseBackend.Models;
 using PrintingHouseBackend.Mapping;
-using PrintingHouseBackend.Dtos.Customer;
+using PrintingHouseBackend.Dtos.CustomerDtos;
 
 namespace PrintingHouseBackend.EndPoints;
 

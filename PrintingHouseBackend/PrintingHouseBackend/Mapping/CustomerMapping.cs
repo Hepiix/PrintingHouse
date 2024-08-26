@@ -1,4 +1,4 @@
-﻿using PrintingHouseBackend.Dtos.Customer;
+﻿using PrintingHouseBackend.Dtos.CustomerDtos;
 using PrintingHouseBackend.Models;
 
 namespace PrintingHouseBackend.Mapping;

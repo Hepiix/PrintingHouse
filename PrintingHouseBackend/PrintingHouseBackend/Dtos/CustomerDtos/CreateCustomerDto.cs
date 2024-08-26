@@ -1,4 +1,4 @@
-﻿namespace PrintingHouseBackend.Dtos.Customer;
+﻿namespace PrintingHouseBackend.Dtos.CustomerDtos;
 
 public record class CreateCustomerDto(
     string Name,
