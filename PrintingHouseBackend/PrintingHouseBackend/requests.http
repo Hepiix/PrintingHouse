@@ -10,3 +10,23 @@ GET http://localhost:5140/customers/1
 GET http://localhost:5140/jobsorders/1
 ###
 GET http://localhost:5140/jobsdetails/1
+###
+POST http://localhost:5140/customers
+Content-Type: application/json
+{
+  "name": "Manuel",
+  "surname": "Brenton",
+  "company": "Burger Chef",
+  "phonenumber": "4438890099"
+}
+###
+DELETE http://localhost:5140/customers/5
+###
+PUT http://localhost:5140/customers/3
+Content-Type: application/json
+{
+  "name": "Manuel",
+  "surname": "Brenton",
+  "company": "Burger Chef",
+  "phonenumber": "4438890099"
+}

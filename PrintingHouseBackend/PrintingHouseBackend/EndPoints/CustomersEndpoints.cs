@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PrintingHouseBackend.Data;
 using PrintingHouseBackend.Models;
+using PrintingHouseBackend.Mapping;
+using PrintingHouseBackend.Dtos.Customer;
 
 namespace PrintingHouseBackend.EndPoints;
 
@@ -25,7 +27,42 @@ public static class CustomersEndpoints
             return customer is null ? Results.NotFound() : Results.Ok(customer);
         })
             .WithName(GetCustomerEndpointName);
-            
+
+        // POST /customers
+        group.MapPost("/", async (CreateCustomerDto newCustomer, PrintingHouseContext dbContext) =>
+        {
+            Customer customer = newCustomer.ToEntity();
+            dbContext.Customers.Add(customer);
+            await dbContext.SaveChangesAsync();
+
+            return Results.CreatedAtRoute(GetCustomerEndpointName, new { id = customer.Id }, customer);
+        });
+
+        // DELETE /customers/1
+        group.MapDelete("/{id}", async (int id, PrintingHouseContext dbContext) =>
+        {
+            await dbContext.Customers.Where(customer => customer.Id == id)
+                .ExecuteDeleteAsync();
+
+            return Results.NoContent();
+        });
+
+        // PUT /customers/1
+        group.MapPut("/{id}", async (int id, UpdatedCustomerDto updatedCustomer, PrintingHouseContext dbContext) =>
+        {
+            var existingCustomer = await dbContext.Customers.FindAsync(id);
+
+            if (existingCustomer is null)
+                return Results.NotFound();
+
+            dbContext.Entry(existingCustomer)
+            .CurrentValues
+            .SetValues(updatedCustomer.ToEntity(id));
+
+            await dbContext.SaveChangesAsync();
+            return Results.NoContent();
+        });
+
         return group;
     }
 }

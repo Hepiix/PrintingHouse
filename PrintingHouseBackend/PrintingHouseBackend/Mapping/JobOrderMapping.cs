@@ -9,7 +9,6 @@ public static class JobOrderMapping
     {
         return new JobOrderDto
         {
-            Id = jobOrder.Id,
             CustomerName = $"{jobOrder.Customer.Name} {jobOrder.Customer.Surname}",
             JobName = jobOrder.JobDetails.Name,
             OrderDate = jobOrder.OrderDate,
