@@ -1,0 +1,85 @@
+﻿@page "/editcustomers"
+@page "/editcustomers/{id:int}"
+
+@inject NavigationManager NavigationManager;
+@inject CustomersClient CustomersClient
+@rendermode InteractiveServer
+
+
+<h3>@title</h3>
+
+@if(customer is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm Model="@customer"
+        FormName="editCustomer"
+        OnValidSubmit="HandleSubmitAsync"
+        Enhance>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <label for="name">Name</label>
+        <InputText id="name" @bind-Value="customer.Name" />
+        
+        <label for="surname">Surname</label>
+        <InputText id="surname" @bind-Value="customer.Surname" />
+
+        <label for="company">Company</label>
+        <InputText id="company" @bind-Value="customer.Company" />
+
+        <label for="phoneNumber">Phone Number</label>
+        <InputText id="phoneNumber" @bind-Value="customer.PhoneNumber" />
+
+        <button type="submit">Submit</button>
+        <a role="button" href="/customers">Cancel</a>
+
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private Customer? customer { get; set; }
+
+    private string title = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (customer is not null)
+            return;
+
+        if (Id is not null)
+        {
+            title = "Edit Customer";
+            customer = await CustomersClient.GetCustomerAsync(Id.Value);
+        }
+        else
+        {
+            customer = new()
+                {
+                    Name = string.Empty,
+                    Surname = string.Empty,
+                    Company = string.Empty,
+                    PhoneNumber = string.Empty
+                };
+            title = "New Customer";
+        }
+    }
+
+    private async Task HandleSubmitAsync()
+    {
+        if (Id is null)
+            await CustomersClient.AddCustomerAsync(customer);
+        else
+        {
+            customer.Id = Id.Value;
+            await CustomersClient.UpdateCustomerAsync(customer);
+        }
+
+        NavigationManager.NavigateTo("/customers");
+    }
+}

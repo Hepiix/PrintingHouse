@@ -1,0 +1,44 @@
+﻿@page "/customers"
+@inject CustomersClient CustomersClient
+
+<h3>Customers</h3>
+@if(customers is null)
+{
+    <h1>Loading...</h1>
+}
+else
+{
+    <table>
+        <thead>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Company</th>
+            <th>Phone Number</th>
+            <th></th>
+        </thead>
+        <tbody>
+            @foreach (var customer in customers)
+            {
+                <tr>
+                    <td>@customer.Id</td>
+                    <td>@customer.Name</td>
+                    <td>@customer.Surname</td>
+                    <td>@customer.Company</td>
+                    <td>@customer.PhoneNumber</td>
+                    <td><a href="editcustomers/@customer.Id">Edit</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    Customer[] customers = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        customers = await CustomersClient.GetCustomersAsync();
+    }
+}
