@@ -1,0 +1,73 @@
+﻿@page "/editjobdetails"
+@page "/editjobdetails/{id:int}"
+@inject JobDetailsClient client
+@inject NavigationManager NavigationManager
+
+<h3>@title</h3>
+
+@if (jobDetails is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm Model="@jobDetails"
+        FormName="editJobDetails"
+        OnValidSubmit="@HandleSubmitAsync"
+        Enhance>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <label for="name">Name</label>
+        <InputText id="name" @bind-Value="@jobDetails.Name" />
+
+        <label for="pattern">Pattern</label>
+        <InputText id="pattern" @bind-Value="@jobDetails.Pattern" />
+
+        <button type="submit">Submit</button>
+        <a role="button" href="/jobsdetails">Cancel</a>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private JobDetails? jobDetails { get; set; }
+
+    private string title = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (jobDetails is not null)
+            return;
+
+        if (Id is not null)
+        {
+            title = "Edit Job Details";
+            jobDetails = await client.GetJobDetailsAsync(Id.Value);
+        }
+        else
+        {
+            jobDetails = new()
+                {
+                    Name = string.Empty,
+                    Pattern = string.Empty
+                };
+            title = "New Job Details";
+        }
+    }
+
+    private async Task HandleSubmitAsync()
+    {
+        if (Id is null)
+            await client.AddJobDetailsAsync(jobDetails);
+        else
+        {
+            jobDetails.Id = Id.Value;
+            await client.UpdateJobDetailsAsync(jobDetails);
+        }
+
+        NavigationManager.NavigateTo("/jobsdetails");
+    }
+}

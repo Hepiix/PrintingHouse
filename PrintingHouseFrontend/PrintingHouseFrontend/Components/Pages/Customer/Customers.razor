@@ -1,7 +1,10 @@
 ﻿@page "/customers"
 @inject CustomersClient CustomersClient
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
 
 <h3>Customers</h3>
+<a href="editcustomers/">Add new</a>
 @if(customers is null)
 {
     <h1>Loading...</h1>
@@ -27,6 +30,7 @@ else
                     <td>@customer.Company</td>
                     <td>@customer.PhoneNumber</td>
                     <td><a href="editcustomers/@customer.Id">Edit</a></td>
+                    <td><a href="deletecustomer/@customer.Id">Delete</a></td>
                 </tr>
             }
         </tbody>

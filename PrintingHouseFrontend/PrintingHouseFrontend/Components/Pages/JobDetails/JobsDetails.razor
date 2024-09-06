@@ -1,0 +1,42 @@
+﻿@page "/jobsdetails"
+@inject JobDetailsClient client
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<h3>JobsDetails</h3>
+<a href="editjobdetails/">Add new</a>
+@if(jobsDetails is null)
+{
+    <h1>Loading...</h1>
+}
+else
+{
+    <table>
+        <thead>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Pattern</th>
+        </thead>
+        <tbody>
+            @foreach (var jobDetails in jobsDetails)
+            {
+                <tr>
+                    <td>@jobDetails.Id</td>
+                    <td>@jobDetails.Name</td>
+                    <td>@jobDetails.Pattern</td>
+                    <td><a href="editjobdetails/@jobDetails.Id">Edit</a></td>
+                    <td><a href="deletejobdetails/@jobDetails.Id">Delete</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    JobDetails[] jobsDetails = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        jobsDetails = await client.GetJobsDetailsAsync();
+    }
+}

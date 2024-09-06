@@ -11,6 +11,7 @@ var printingHouseApiUrl = builder.Configuration["PrintingHouseApiUrl"] ??
     throw new Exception("PrintingHouseApiUrl is not set");
 
 builder.Services.AddHttpClient<CustomersClient>(client => client.BaseAddress = new Uri(printingHouseApiUrl));
+builder.Services.AddHttpClient<JobDetailsClient>(client => client.BaseAddress = new Uri(printingHouseApiUrl));
 
 var app = builder.Build();
 

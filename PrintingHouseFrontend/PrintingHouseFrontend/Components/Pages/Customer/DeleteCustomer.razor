@@ -1,0 +1,35 @@
+﻿@page "/deletecustomer/{id:int}"
+
+@inject CustomersClient CustomersClient
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+<h3>DeleteCustomer</h3>
+@if(customer is null)
+{
+    <p>Customer is not existing</p>
+}
+else
+{
+    <p>Do you want to delete @customer.Name @customer.Surname ?</p>
+
+    <button type="button" @onclick="@DeleteAsync">Yes</button>
+    <a role="button" href="/customers">No</a>
+}
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    Customer customer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        customer = await CustomersClient.GetCustomerAsync(Id);
+    }
+
+    private async Task DeleteAsync()
+    {
+        await CustomersClient.DeleteCustomerAsync(customer.Id);
+        NavigationManager.NavigateTo("/customers");
+    }
+}

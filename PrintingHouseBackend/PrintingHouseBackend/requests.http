@@ -64,7 +64,7 @@ PUT http://localhost:5140/jobsdetails/2
 Content-Type: application/json
 {
   "name": "MB. Burger Chef",
-  "pattern": "mbbc10"
+  "pattern": "mbbc0"
 }
 ###
 
