@@ -12,7 +12,7 @@ var printingHouseApiUrl = builder.Configuration["PrintingHouseApiUrl"] ??
 
 builder.Services.AddHttpClient<CustomersClient>(client => client.BaseAddress = new Uri(printingHouseApiUrl));
 builder.Services.AddHttpClient<JobDetailsClient>(client => client.BaseAddress = new Uri(printingHouseApiUrl));
-
+builder.Services.AddHttpClient<JobOrderClient>(client => client.BaseAddress = new Uri(printingHouseApiUrl));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

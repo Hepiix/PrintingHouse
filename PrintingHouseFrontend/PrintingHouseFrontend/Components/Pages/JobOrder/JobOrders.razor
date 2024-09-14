@@ -1,0 +1,45 @@
+﻿@page "/joborders"
+@inject JobOrderClient JobOrderClient
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<h3>JobOrder</h3>
+
+@if(jobOrders is null)
+{
+    <h1>Loading...</h1>
+}
+else
+{
+    <table>
+        <thead>
+            <th>Id</th>
+            <th>Customer Name</th>
+            <th>Job Name</th>
+            <th>Order Date</th>
+            <th>Status</th>
+            <th></th>
+        </thead>
+        <tbody>
+            @foreach (JobOrderViewModel jobOrder in jobOrders)
+            {
+                <tr>
+                    <td>@jobOrder.Id</td>
+                    <td>@jobOrder.CustomerName</td>
+                    <td>@jobOrder.JobName</td>
+                    <td>@jobOrder.OrderDate</td>
+                    <td>@jobOrder.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    JobOrderViewModel[] jobOrders = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        jobOrders = await JobOrderClient.GetJobOrdersAsync();
+    }
+}
