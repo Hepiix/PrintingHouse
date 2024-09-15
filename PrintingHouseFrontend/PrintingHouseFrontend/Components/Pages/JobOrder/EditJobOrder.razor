@@ -1,64 +1,105 @@
-﻿@page "/newjoborder"
+﻿@page "/editjoborder/{id:int}"
 
 @inject NavigationManager NavigationManager
 @inject JobOrderClient JobOrderClient
 @inject CustomersClient CustomersClient
 @inject JobDetailsClient JobDetailsClient
 
-@rendermode InteractiveServer
+<h3>Edit Job Order</h3>
+@if(oldJobDetails is null || oldCustomer is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm Model="@jobOrderEntity"
+        FormName="editJobOrder"
+        OnValidSubmit="HandleSubmitAsync"
+        Enhance>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-<h3>New Job Order</h3>
-<EditForm Model="@jobOrderEntity"
-    FormName="newJobOrder"
-    OnValidSubmit="HandleSubmitAsync"
-    Enhance>
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <label for="customerId">Customer Name</label>
-    <InputSelect id="customerId" @bind-Value="jobOrderEntity.CustomerId">
-        <option value="">--- Select ---</option>
-        @foreach(var customer in customers)
-        {
-            <option value="@customer.Id">@customer.Name @customer.Surname</option>
-        }
-    </InputSelect>
-    <a role="button" href="/editcustomers">Add new</a>
-    <label for="jobDetailsId">Job Name</label>
-    <InputSelect id="jobDetailsId" @bind-Value="jobOrderEntity.JobDetailsId">
-        <option value="">--- Select ---</option>
-        @foreach(var jobDetail in jobDetails)
-        {
-            <option value="@jobDetail.Id">@jobDetail.Name</option>
-        }
-    </InputSelect>
-    <a role="button" href="/editjobdetails">Add new</a>
-    <label for="orderDate">Order Date</label>
-    <InputDate id="orderDate" @bind-Value="jobOrderEntity.OrderDate" />
-    <label for="status">Status</label>
-    <InputCheckbox id="status" @bind-Value="jobOrderEntity.Status" />
+        <label for="customerId">Customer Name</label>
+        <InputSelect id="customerId" @bind-Value="jobOrderEntity.CustomerId">
+            <option value="@oldCustomer.Id">@oldCustomer.Name @oldCustomer.Surname</option>
+            @foreach (var customer in customers)
+            {
+                if(customer == oldCustomer)
+                    continue;
+                else
+                {
+                    <option value="@customer.Id">@customer.Name @customer.Surname</option>
+                }
+            }
+        </InputSelect>
 
-    <button type="submit">Submit</button>
-</EditForm>
+        <label for="jobDetailsId">Job Name</label>
+        <InputSelect id="jobDetailsId" @bind-Value="jobOrderEntity.JobDetailsId">
+            <option value="@oldJobDetails.Id">@oldJobDetails.Name</option>
+            @foreach (var jobDetail in jobDetails)
+            {
+                if (jobDetail == oldJobDetails)
+                    continue;
+                else
+                {
+                    <option value="@jobDetail.Id">@jobDetail.Name</option>
+                }
+                
+            }
+        </InputSelect>
 
+        <label for="orderDate">Order Date</label>
+        <InputDate id="orderDate" @bind-Value="jobOrderEntity.OrderDate" />
+
+        <label for="status">Status</label>
+        <InputCheckbox id="status" @bind-Value="jobOrderEntity.Status" />
+
+        <button type="submit">Save Changes</button>
+    </EditForm>
+
+}
 
 @code {
-    private JobOrderEntity jobOrderEntity = new JobOrderEntity
-    {
-        OrderDate = DateOnly.FromDateTime(DateTime.Today)
-    };
+    [Parameter]
+    public int id { get; set; }
+    [SupplyParameterFromForm]
+    private JobOrderEntity? jobOrderEntity { get; set; }
 
-    JobDetails[] jobDetails = [];
-    Customer[] customers = [];
+    private JobOrderViewModel? jobOrderViewModel;
+    private JobDetails[] jobDetails = [];
+    private Customer[] customers = [];
+    private Customer? oldCustomer;
+    private JobDetails? oldJobDetails;
+
 
     protected override async Task OnInitializedAsync()
     {
+        jobOrderViewModel = await JobOrderClient.GetJobOrderAsync(id);
         jobDetails = await JobDetailsClient.GetJobsDetailsAsync();
         customers = await CustomersClient.GetCustomersAsync();
+
+        oldJobDetails = jobDetails.FirstOrDefault(j => j.Name == jobOrderViewModel.JobName);
+        oldCustomer = customers.FirstOrDefault(c => c.Name ==
+            (jobOrderViewModel.CustomerName.IndexOf(' ') > 0 ?
+             jobOrderViewModel.CustomerName.Substring(0, jobOrderViewModel.CustomerName.IndexOf(' '))
+             : jobOrderViewModel.CustomerName));
+        if (jobOrderEntity is not null)
+            return;
+
+        jobOrderEntity = new()
+            {
+                CustomerId = oldCustomer.Id,
+                JobDetailsId = oldJobDetails.Id,
+                OrderDate = jobOrderViewModel.OrderDate,
+                Status = jobOrderViewModel.Status
+            };
+
     }
 
     private async Task HandleSubmitAsync()
     {
-        await JobOrderClient.AddJobOrderAsync(jobOrderEntity);
+        jobOrderEntity.Id = jobOrderViewModel.Id;
+        await JobOrderClient.UpdateJobOrderAsync(jobOrderEntity);
         NavigationManager.NavigateTo("/joborders");
     }
 }

@@ -1,0 +1,64 @@
+﻿@page "/newjoborder"
+
+@inject NavigationManager NavigationManager
+@inject JobOrderClient JobOrderClient
+@inject CustomersClient CustomersClient
+@inject JobDetailsClient JobDetailsClient
+
+@rendermode InteractiveServer
+
+<h3>New Job Order</h3>
+<EditForm Model="@jobOrderEntity"
+    FormName="newJobOrder"
+    OnValidSubmit="HandleSubmitAsync"
+    Enhance>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <label for="customerId">Customer Name</label>
+    <InputSelect id="customerId" @bind-Value="jobOrderEntity.CustomerId">
+        <option value="">--- Select ---</option>
+        @foreach(var customer in customers)
+        {
+            <option value="@customer.Id">@customer.Name @customer.Surname</option>
+        }
+    </InputSelect>
+    <a role="button" href="/editcustomers">Add new</a>
+    <label for="jobDetailsId">Job Name</label>
+    <InputSelect id="jobDetailsId" @bind-Value="jobOrderEntity.JobDetailsId">
+        <option value="">--- Select ---</option>
+        @foreach(var jobDetail in jobDetails)
+        {
+            <option value="@jobDetail.Id">@jobDetail.Name</option>
+        }
+    </InputSelect>
+    <a role="button" href="/editjobdetails">Add new</a>
+    <label for="orderDate">Order Date</label>
+    <InputDate id="orderDate" @bind-Value="jobOrderEntity.OrderDate" />
+    <label for="status">Status</label>
+    <InputCheckbox id="status" @bind-Value="jobOrderEntity.Status" />
+
+    <button type="submit">Submit</button>
+</EditForm>
+
+
+@code {
+    private JobOrderEntity jobOrderEntity = new JobOrderEntity
+    {
+        OrderDate = DateOnly.FromDateTime(DateTime.Today)
+    };
+
+    JobDetails[] jobDetails = [];
+    Customer[] customers = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        jobDetails = await JobDetailsClient.GetJobsDetailsAsync();
+        customers = await CustomersClient.GetCustomersAsync();
+    }
+
+    private async Task HandleSubmitAsync()
+    {
+        await JobOrderClient.AddJobOrderAsync(jobOrderEntity);
+        NavigationManager.NavigateTo("/joborders");
+    }
+}
