@@ -2,39 +2,40 @@
 @inject CustomersClient CustomersClient
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
-
 <h3>Customers</h3>
-<a href="editcustomers/">Add new</a>
 @if(customers is null)
 {
     <h1>Loading...</h1>
 }
 else
 {
-    <table>
-        <thead>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Company</th>
-            <th>Phone Number</th>
-            <th></th>
+    <div>
+    
+    <table class="table table-dark table-hover table-bordered caption-top table-align-middle">
+        <caption>List of all customers</caption>
+        <thead class="table-light align-middle">
+            <th class="text-center" scope="col" style="width: 5%;">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col" style="width: 25%;">Company</th>
+            <th class="text-center" scope="col" style="width: 12%;">Phone Number</th>
+            <th class="text-center" scope="col" style="width: 12%;"><a href="editcustomers/" class="btn btn-success"><i class="bi bi-person-plus"></i> Add new</a></th>
         </thead>
-        <tbody>
+        <tbody class="table-group-divider">
             @foreach (var customer in customers)
             {
-                <tr>
-                    <td>@customer.Id</td>
+                <tr class="align-middle">
+                    <td class="text-center">@customer.Id</td>
                     <td>@customer.Name</td>
                     <td>@customer.Surname</td>
                     <td>@customer.Company</td>
-                    <td>@customer.PhoneNumber</td>
-                    <td><a href="editcustomers/@customer.Id">Edit</a></td>
-                    <td><a href="deletecustomer/@customer.Id">Delete</a></td>
+                    <td class="text-center">@customer.PhoneNumber</td>
+                    <td class="text-center"><a href="editcustomers/@customer.Id" class="btn btn-primary"><i class="bi bi-pencil"></i></a> <a href="deletecustomer/@customer.Id" class="btn btn-danger"><i class="bi bi-trash3"></i></a></td>
                 </tr>
             }
         </tbody>
     </table>
+    </div>
 }
 
 

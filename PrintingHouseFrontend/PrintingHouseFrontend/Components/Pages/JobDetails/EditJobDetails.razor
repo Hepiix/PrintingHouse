@@ -18,13 +18,13 @@ else
         <DataAnnotationsValidator />
         <ValidationSummary />
         <label for="name">Name</label>
-        <InputText id="name" @bind-Value="@jobDetails.Name" />
+        <InputText class="form-control" id="name" @bind-Value="@jobDetails.Name" />
 
         <label for="pattern">Pattern</label>
-        <InputText id="pattern" @bind-Value="@jobDetails.Pattern" />
-
-        <button type="submit">Submit</button>
-        <a role="button" href="/jobsdetails">Cancel</a>
+        <InputText class="form-control" id="pattern" @bind-Value="@jobDetails.Pattern" />
+        <br />
+        <button class="btn btn-success" type="submit">@submitButton</button>
+        <a class="btn btn-danger" role="button" href="/jobsdetails">Cancel</a>
     </EditForm>
 }
 
@@ -36,6 +36,7 @@ else
     private JobDetails? jobDetails { get; set; }
 
     private string title = string.Empty;
+    private string submitButton = string.Empty;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -45,6 +46,7 @@ else
         if (Id is not null)
         {
             title = "Edit Job Details";
+            submitButton = "Save changes";
             jobDetails = await client.GetJobDetailsAsync(Id.Value);
         }
         else
@@ -55,6 +57,7 @@ else
                     Pattern = string.Empty
                 };
             title = "New Job Details";
+            submitButton = "Submit";
         }
     }
 

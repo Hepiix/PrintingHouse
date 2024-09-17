@@ -20,7 +20,7 @@ else
         <ValidationSummary />
 
         <label for="customerId">Customer Name</label>
-        <InputSelect id="customerId" @bind-Value="jobOrderEntity.CustomerId">
+        <InputSelect class="form-control" id="customerId" @bind-Value="jobOrderEntity.CustomerId">
             <option value="@oldCustomer.Id">@oldCustomer.Name @oldCustomer.Surname</option>
             @foreach (var customer in customers)
             {
@@ -34,7 +34,7 @@ else
         </InputSelect>
 
         <label for="jobDetailsId">Job Name</label>
-        <InputSelect id="jobDetailsId" @bind-Value="jobOrderEntity.JobDetailsId">
+        <InputSelect class="form-control" id="jobDetailsId" @bind-Value="jobOrderEntity.JobDetailsId">
             <option value="@oldJobDetails.Id">@oldJobDetails.Name</option>
             @foreach (var jobDetail in jobDetails)
             {
@@ -49,12 +49,12 @@ else
         </InputSelect>
 
         <label for="orderDate">Order Date</label>
-        <InputDate id="orderDate" @bind-Value="jobOrderEntity.OrderDate" />
-
+        <InputDate class="form-control" id="orderDate" @bind-Value="jobOrderEntity.OrderDate" />
         <label for="status">Status</label>
-        <InputCheckbox id="status" @bind-Value="jobOrderEntity.Status" />
-
-        <button type="submit">Save Changes</button>
+        <InputCheckbox class="form-check-input mb-3" id="status" @bind-Value="jobOrderEntity.Status" />
+        <br />
+        <button class="btn btn-success" type="submit">Save Changes</button>
+        <a role="button" class="btn btn-danger" href="/joborders">Cancel</a>
     </EditForm>
 
 }
