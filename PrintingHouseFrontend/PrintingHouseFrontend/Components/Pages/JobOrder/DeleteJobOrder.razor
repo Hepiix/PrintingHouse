@@ -1,34 +1,36 @@
-﻿@page "/deletejoborder/{id:int}"
-@inject JobOrderClient JobOrderClient
+﻿@inject JobOrderClient JobOrderClient
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
-<h3>DeleteJobOrder</h3>
-@if (jobOrder is null)
-{
-    <p>JobDetails is not existing</p>
-}
-else
-{
-    <p>Do you want to delete @jobOrder.JobName ?</p>
+<div class="modal fade" id="@GetModalId(jobOrder)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title text-danger fs-5" id="exampleModalLabel">Do you want to delete @jobOrder.CustomerName @jobOrder.JobName?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @onclick="@DeleteAsync">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <button type="button" @onclick="@DeleteAsync">Yes</button>
-    <a role="button" href="/joborders">No</a>
-}
 
 @code {
     [Parameter]
-    public int Id { get; set; }
-    JobOrderViewModel? jobOrder;
+    public JobOrderViewModel? jobOrder { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    public static string GetModalId(JobOrderViewModel? jobOrder)
     {
-        jobOrder = await JobOrderClient.GetJobOrderAsync(Id);
+        ArgumentNullException.ThrowIfNull(jobOrder);
+        return $"deleteModal-{jobOrder.Id}";
     }
 
     private async Task DeleteAsync()
     {
-        await JobOrderClient.DeleteJobOrderAsync(jobOrder.Id);
-        NavigationManager.NavigateTo("/joborders");
+        await JobOrderClient.DeleteJobOrderAsync(jobOrder!.Id);
+        NavigationManager.Refresh();
     }
 }

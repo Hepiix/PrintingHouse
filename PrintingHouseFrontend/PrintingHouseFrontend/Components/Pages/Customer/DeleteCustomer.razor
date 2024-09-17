@@ -1,35 +1,36 @@
-﻿@page "/deletecustomer/{id:int}"
-
-@inject CustomersClient CustomersClient
+﻿@inject CustomersClient CustomersClient
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
-<h3>DeleteCustomer</h3>
-@if(customer is null)
-{
-    <p>Customer is not existing</p>
-}
-else
-{
-    <p>Do you want to delete @customer.Name @customer.Surname ?</p>
 
-    <button type="button" @onclick="@DeleteAsync">Yes</button>
-    <a role="button" href="/customers">No</a>
-}
+<div class="modal fade" id="@GetModalId(customer)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title text-danger fs-5" id="exampleModalLabel">Do you want to delete @customer.Name @customer.Surname?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @onclick="@DeleteAsync">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @code {
     [Parameter]
-    public int Id { get; set; }
-    Customer customer;
+    public Customer? customer { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    public static string GetModalId(Customer? customer)
     {
-        customer = await CustomersClient.GetCustomerAsync(Id);
+        ArgumentNullException.ThrowIfNull(customer);
+        return $"deleteModal-{customer.Id}";
     }
 
     private async Task DeleteAsync()
     {
-        await CustomersClient.DeleteCustomerAsync(customer.Id);
-        NavigationManager.NavigateTo("/customers");
+        await CustomersClient.DeleteCustomerAsync(customer!.Id);
+        NavigationManager.Refresh();
     }
 }

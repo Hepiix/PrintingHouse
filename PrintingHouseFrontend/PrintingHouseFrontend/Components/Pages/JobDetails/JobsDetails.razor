@@ -26,7 +26,12 @@ else
                     <td class="text-center">@jobDetails.Id</td>
                     <td>@jobDetails.Name</td>
                     <td>@jobDetails.Pattern</td>
-                    <td class="text-center"><a href="editjobdetails/@jobDetails.Id" class="btn btn-primary"><i class="bi bi-pencil"></i></a> <a href="deletejobdetails/@jobDetails.Id" class="btn btn-danger"><i class="bi bi-trash3" /></a></td>
+                    <td class="text-center"><a href="editjobdetails/@jobDetails.Id" class="btn btn-primary"><i class="bi bi-pencil"></i></a>
+                        <button class="btn btn-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="@GetDeleteModalId(jobDetails)"><i class="bi bi-trash3" /></button>
+                        <DeleteJobDetails jobDetails="@jobDetails" />
+                    </td>
                 </tr>
             }
         </tbody>
@@ -40,4 +45,6 @@ else
     {
         jobsDetails = await client.GetJobsDetailsAsync();
     }
+
+    private string GetDeleteModalId(JobDetails jobDetails) => $"#{DeleteJobDetails.GetModalId(jobDetails)}";
 }
