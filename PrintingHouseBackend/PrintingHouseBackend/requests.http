@@ -67,5 +67,11 @@ Content-Type: application/json
   "pattern": "mbbc0"
 }
 ###
-
+POST http://localhost:5140/auth/login
+Content-Type: application/json
+{
+  "email": "jeremy20110@yahoo.com",
+  "password": "123"
+}
+###
 

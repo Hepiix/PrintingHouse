@@ -8,6 +8,7 @@ public class PrintingHouseContext(DbContextOptions<PrintingHouseContext> options
     public DbSet<Customer> Customers => Set<Customer>();
     public DbSet<JobDetails> JobsDetails => Set<JobDetails>();
     public DbSet<JobOrder> JobsOrders => Set<JobOrder>();
+    public DbSet<UserModel> UsersData => Set<UserModel>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,5 +26,11 @@ public class PrintingHouseContext(DbContextOptions<PrintingHouseContext> options
             new { Id = 1, CustomerId = 1, JobDetailsId = 1, OrderDate = new DateOnly(2024,2,12), Status = false },
             new { Id = 2, CustomerId = 2, JobDetailsId = 2, OrderDate = new DateOnly(2024,6,1), Status = false },
             new { Id = 3, CustomerId = 3, JobDetailsId = 3, OrderDate = new DateOnly(2023,7,27), Status = true });
+
+        modelBuilder.Entity<UserModel>().HasData(
+            new { Id = 1, Email = "jeremy20110@yahoo.com", Password = "123", FirstName = "Jeri", LastName = "Medlin" },
+            new { Id = 2, Email = "heber_barte@gmail.com", Password = "123", FirstName = "Cynthia", LastName = "Chamberlain" },
+            new { Id = 3, Email = "bettie1995@hotmail.com", Password = "123", FirstName = "Justin", LastName = "Smith" }
+            );
     }
 }

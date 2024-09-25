@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrintingHouseBackend.Data;
 
@@ -11,9 +12,11 @@ using PrintingHouseBackend.Data;
 namespace PrintingHouseBackend.Migrations
 {
     [DbContext(typeof(PrintingHouseContext))]
-    partial class PrintingHouseContextModelSnapshot : ModelSnapshot
+    [Migration("20240925122209_UserLogin")]
+    partial class UserLogin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

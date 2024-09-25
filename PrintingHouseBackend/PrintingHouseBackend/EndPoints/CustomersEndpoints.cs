@@ -3,6 +3,7 @@ using PrintingHouseBackend.Data;
 using PrintingHouseBackend.Models;
 using PrintingHouseBackend.Mapping;
 using PrintingHouseBackend.Dtos.CustomerDtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PrintingHouseBackend.EndPoints;
 
@@ -21,12 +22,13 @@ public static class CustomersEndpoints
                 .ToListAsync());
 
         // GET /customers/1
-        group.MapGet("/{id}", async (int id, PrintingHouseContext dbContext) =>
+        group.MapGet("/{id}", [Authorize] async (int id, PrintingHouseContext dbContext) =>
         {
             Customer? customer = await dbContext.Customers.FindAsync(id);
             return customer is null ? Results.NotFound() : Results.Ok(customer);
         })
-            .WithName(GetCustomerEndpointName);
+            .WithName(GetCustomerEndpointName)
+            .RequireAuthorization();
 
         // POST /customers
         group.MapPost("/", async (CreateCustomerDto newCustomer, PrintingHouseContext dbContext) =>
