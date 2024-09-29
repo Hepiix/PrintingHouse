@@ -1,0 +1,46 @@
+﻿@page "/login"
+@inject UserLoginClient client
+@inject NavigationManager NavigationManager
+@inject ILocalStorageService localStorage
+
+<h3>Login</h3>
+<EditForm Model="@user"
+    FormName="login"
+    OnValidSubmit="@HandleSubmitAsync"
+    Enhance>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <label for="email">Email</label>
+    <InputText class="form-control" id="email" @bind-Value="user.Email" />
+
+    <label for="password">Password</label>
+    <InputText class="form-control" id="password" @bind-Value="user.Password" />
+
+    <button class="btn btn-success" type="submit">Login</button>
+</EditForm>
+
+
+@code {
+    [SupplyParameterFromForm]
+    private UserData? user { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        user = new()
+            {
+                Email = string.Empty,
+                Password = string.Empty
+            };
+    }
+
+    private async Task HandleSubmitAsync()
+    {
+        var response = await client.LoginUserAsync(user!);
+        AuthToken? token = await response.Content.ReadFromJsonAsync<AuthToken>();
+        Console.WriteLine(token);
+        await localStorage.SetItemAsStringAsync("token", token.Token);
+
+        NavigationManager.NavigateTo("/");
+
+    }
+}

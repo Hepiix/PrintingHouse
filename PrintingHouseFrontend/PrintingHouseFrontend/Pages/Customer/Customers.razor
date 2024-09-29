@@ -1,7 +1,7 @@
 ﻿@page "/customers"
 @inject CustomersClient CustomersClient
 @inject NavigationManager NavigationManager
-@attribute [StreamRendering]
+
 <h3>Customers</h3>
 @if(customers is null)
 {
@@ -46,11 +46,15 @@ else
 
 
 @code {
-    Customer[] customers = [];
+    Customer[] customers;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        customers = await CustomersClient.GetCustomersAsync();
+        if (firstRender)
+        {
+            customers = await CustomersClient.GetCustomersAsync();
+            StateHasChanged();
+        }
     }
 
     private string GetDeleteModalId(Customer customer) => $"#{DeleteCustomer.GetModalId(customer)}";

@@ -14,6 +14,17 @@ builder.Services.AddDbContext<PrintingHouseContext>(options =>
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secret = Encoding.ASCII.GetBytes(jwtSettings["Secret"]);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazorClient", builder =>
+    {
+        builder.WithOrigins("https://localhost:7036")
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .AllowCredentials();
+    });
+});
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -35,6 +46,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 var app = builder.Build();
+app.UseCors("AllowBlazorClient");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapCustomersEndpoints();

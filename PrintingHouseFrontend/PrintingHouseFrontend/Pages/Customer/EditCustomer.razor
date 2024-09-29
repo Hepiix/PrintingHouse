@@ -1,9 +1,9 @@
 ﻿@page "/editcustomers"
 @page "/editcustomers/{id:int}"
 
-@inject NavigationManager NavigationManager;
+@inject NavigationManager NavigationManager
 @inject CustomersClient CustomersClient
-@rendermode InteractiveServer
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 
 <h3>@title</h3>
@@ -51,29 +51,35 @@ else
     private string title = string.Empty;
     private string submitButton = string.Empty;
 
-    protected override async Task OnParametersSetAsync()
-    {
-        if (customer is not null)
-            return;
 
-        if (Id is not null)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
         {
-            title = "Edit Customer";
-            submitButton = "Save changes";
-            customer = await CustomersClient.GetCustomerAsync(Id.Value);
+            if (customer is not null)
+                return;
+
+            if (Id is not null)
+            {
+                title = "Edit Customer";
+                submitButton = "Save changes";
+                customer = await CustomersClient.GetCustomerAsync(Id.Value);
+            }
+            else
+            {
+                customer = new()
+                    {
+                        Name = string.Empty,
+                        Surname = string.Empty,
+                        Company = string.Empty,
+                        PhoneNumber = string.Empty
+                    };
+
+                title = "New Customer";
+                submitButton = "Submit";
+            }
         }
-        else
-        {
-            customer = new()
-                {
-                    Name = string.Empty,
-                    Surname = string.Empty,
-                    Company = string.Empty,
-                    PhoneNumber = string.Empty
-                };
-            title = "New Customer";
-            submitButton = "Submit";
-        }
+        StateHasChanged();
     }
 
     private async Task HandleSubmitAsync()

@@ -1,34 +1,26 @@
 using PrintingHouseFrontend.Clients;
-using PrintingHouseFrontend.Components;
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using System.Net.Http;
+using PrintingHouseFrontend;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.RootComponents.Add<App>("#app");
 
-// Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
-
+// Get the PrintingHouseApiUrl from the WebAssembly host configuration (appsettings.json in wwwroot)
 var printingHouseApiUrl = builder.Configuration["PrintingHouseApiUrl"] ??
     throw new Exception("PrintingHouseApiUrl is not set");
 
-builder.Services.AddHttpClient<CustomersClient>(client => client.BaseAddress = new Uri(printingHouseApiUrl));
+// Configure services for HttpClient with base URL for API calls
+builder.Services.AddTransient<AuthService>();
+
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(printingHouseApiUrl) });
+builder.Services.AddHttpClient<CustomersClient>(client => client.BaseAddress = new Uri(printingHouseApiUrl)).AddHttpMessageHandler<AuthService>();
 builder.Services.AddHttpClient<JobDetailsClient>(client => client.BaseAddress = new Uri(printingHouseApiUrl));
 builder.Services.AddHttpClient<JobOrderClient>(client => client.BaseAddress = new Uri(printingHouseApiUrl));
-var app = builder.Build();
+builder.Services.AddHttpClient<UserLoginClient>(client => client.BaseAddress = new Uri(printingHouseApiUrl));
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+// Add local storage for WebAssembly
+builder.Services.AddBlazoredLocalStorage();
 
-app.UseHttpsRedirection();
-
-app.UseStaticFiles();
-app.UseAntiforgery();
-
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
-
-app.Run();
+await builder.Build().RunAsync();
