@@ -8,5 +8,7 @@ namespace PrintingHouseFrontend.Models
         public string? Email { get; set; }
         [Required(ErrorMessage = "password is required.")]
         public string? Password { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

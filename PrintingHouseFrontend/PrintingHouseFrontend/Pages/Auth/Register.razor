@@ -1,0 +1,55 @@
+﻿@page "/register"
+@inject NavigationManager NavigationManager
+@inject UserLoginClient client
+
+<h3>Register</h3>
+    <div>
+    <EditForm Model="@user"
+        FormName="newUser"
+        OnValidSubmit="HandleSubmitAsync"
+        Enhance>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <label for="firstName">First Name</label>
+        <InputText class="form-control" id="name" @bind-Value="user.FirstName" />
+        
+        <label for="LastName">Last Name</label>
+        <InputText class="form-control" id="surname" @bind-Value="user.LastName" />
+
+        <label for="email">Email</label>
+        <InputText class="form-control" id="company" @bind-Value="user.Email" />
+
+        <label for="password">Password</label>
+        <InputText class="form-control" id="phoneNumber" @bind-Value="user.Password" />
+        <br />
+        <button class="btn btn-success" type="submit">Register</button>
+
+        <a role="button" class="btn btn-danger" href="/customers">Cancel</a>
+
+    </EditForm>
+    </div>
+
+
+@code {
+    [SupplyParameterFromForm]
+    UserData user { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        user = new()
+            {
+                Email = string.Empty,
+                Password = string.Empty,
+                FirstName = string.Empty,
+                LastName = string.Empty
+            };
+        return Task.CompletedTask;
+    }
+
+
+    private async Task HandleSubmitAsync()
+    {
+        await client.RegisterUser(user);
+        NavigationManager.NavigateTo("/");
+    }
+}

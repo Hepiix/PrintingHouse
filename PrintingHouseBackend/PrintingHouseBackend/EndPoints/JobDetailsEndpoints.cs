@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using PrintingHouseBackend.Data;
 using PrintingHouseBackend.Dtos.JobDetailsDtos;
 using PrintingHouseBackend.Mapping;
@@ -15,13 +16,13 @@ public static class JobDetailsEndpoints
         var group = app.MapGroup("jobsdetails");
 
         // GET /jobsdetails
-        group.MapGet("/", async (PrintingHouseContext dbContext) =>
+        group.MapGet("/", [Authorize] async (PrintingHouseContext dbContext) =>
             await dbContext.JobsDetails
                 .AsNoTracking()
                 .ToListAsync());
 
         // GET /jobsdetails/1
-        group.MapGet("/{id}", async (int id, PrintingHouseContext dbContext) =>
+        group.MapGet("/{id}", [Authorize] async (int id, PrintingHouseContext dbContext) =>
         {
             JobDetails? jobDetails = await dbContext.JobsDetails.FindAsync(id);
             return jobDetails is null ? Results.NotFound() : Results.Ok(jobDetails);
@@ -29,7 +30,7 @@ public static class JobDetailsEndpoints
             .WithName(GetJobDetailsEndpointName);
 
         // POST /jobsdetails
-        group.MapPost("/", async (CreateJobDetailsDto newJobDetails, PrintingHouseContext dbContext) =>
+        group.MapPost("/", [Authorize] async (CreateJobDetailsDto newJobDetails, PrintingHouseContext dbContext) =>
         {
             JobDetails jobDetails = newJobDetails.ToEntity();
             dbContext.JobsDetails.Add(jobDetails);
@@ -39,7 +40,7 @@ public static class JobDetailsEndpoints
         });
 
         // DELETE /jobsdetails/1
-        group.MapDelete("/{id}", async (int id, PrintingHouseContext dbContext) =>
+        group.MapDelete("/{id}", [Authorize] async (int id, PrintingHouseContext dbContext) =>
         {
             await dbContext.JobsDetails.Where(jobDetails => jobDetails.Id == id)
                 .ExecuteDeleteAsync();
@@ -48,7 +49,7 @@ public static class JobDetailsEndpoints
         });
 
         // PUT /jobsdetails/1
-        group.MapPut("/{id}", async (int id, UpdatedJobDetailsDto updatedJobDetails, PrintingHouseContext dbContext) =>
+        group.MapPut("/{id}", [Authorize] async (int id, UpdatedJobDetailsDto updatedJobDetails, PrintingHouseContext dbContext) =>
         {
             var existingJobDetails = await dbContext.JobsDetails.FindAsync(id);
 

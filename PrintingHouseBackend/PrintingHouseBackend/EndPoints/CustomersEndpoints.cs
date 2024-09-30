@@ -16,7 +16,7 @@ public static class CustomersEndpoints
         var group = app.MapGroup("customers");
 
         // GET /customers
-        group.MapGet("/", async (PrintingHouseContext dbContext) =>
+        group.MapGet("/", [Authorize] async (PrintingHouseContext dbContext) =>
             await dbContext.Customers
                 .AsNoTracking()
                 .ToListAsync());
@@ -31,7 +31,7 @@ public static class CustomersEndpoints
             .RequireAuthorization();
 
         // POST /customers
-        group.MapPost("/", async (CreateCustomerDto newCustomer, PrintingHouseContext dbContext) =>
+        group.MapPost("/", [Authorize] async (CreateCustomerDto newCustomer, PrintingHouseContext dbContext) =>
         {
             Customer customer = newCustomer.ToEntity();
             dbContext.Customers.Add(customer);
@@ -41,7 +41,7 @@ public static class CustomersEndpoints
         });
 
         // DELETE /customers/1
-        group.MapDelete("/{id}", async (int id, PrintingHouseContext dbContext) =>
+        group.MapDelete("/{id}", [Authorize] async (int id, PrintingHouseContext dbContext) =>
         {
             await dbContext.Customers.Where(customer => customer.Id == id)
                 .ExecuteDeleteAsync();
@@ -50,7 +50,7 @@ public static class CustomersEndpoints
         });
 
         // PUT /customers/1
-        group.MapPut("/{id}", async (int id, UpdatedCustomerDto updatedCustomer, PrintingHouseContext dbContext) =>
+        group.MapPut("/{id}", [Authorize] async (int id, UpdatedCustomerDto updatedCustomer, PrintingHouseContext dbContext) =>
         {
             var existingCustomer = await dbContext.Customers.FindAsync(id);
 

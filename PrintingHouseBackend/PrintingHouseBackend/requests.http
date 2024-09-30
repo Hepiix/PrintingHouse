@@ -74,4 +74,12 @@ Content-Type: application/json
   "password": "123"
 }
 ###
-
+POST http://localhost:5140/auth/register
+Content-Type: application/json
+{
+  "email": "exampleeeemail@email.com",
+  "password": "123",
+  "firstname": "exampleName",
+  "lastname": "exampleLastName"
+}
+###
