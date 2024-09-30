@@ -25,7 +25,7 @@ public static class JobOrdersEndpoints
                 .ToListAsync();
 
             return jobOrders is null ? Results.NotFound() : Results.Ok(jobOrders.ToJobOrdersSummaryDto());
-        });
+        }).RequireAuthorization();
 
 
         // GET /jobsorders/1
@@ -38,7 +38,7 @@ public static class JobOrdersEndpoints
 
             return jobOrder is null ? Results.NotFound() : Results.Ok(jobOrder.ToJobOrderSummaryDto());
         })
-            .WithName(GetJobOrderEndpointName);
+            .WithName(GetJobOrderEndpointName).RequireAuthorization();
 
         // POST /jobsorders/1
         group.MapPost("/", [Authorize] async (CreateJobOrderDto createdJobOrder, PrintingHouseContext dbContext) =>
@@ -51,7 +51,7 @@ public static class JobOrdersEndpoints
             await dbContext.SaveChangesAsync();
 
             return Results.CreatedAtRoute(GetJobOrderEndpointName, new { id = jobOrder.Id });
-        });
+        }).RequireAuthorization();
 
         // DELETE /jobsorders/1
         group.MapDelete("/{id}", [Authorize] async (int id, PrintingHouseContext dbContext) =>
@@ -60,7 +60,7 @@ public static class JobOrdersEndpoints
                 .ExecuteDeleteAsync();
 
             return Results.NoContent();
-        });
+        }).RequireAuthorization();
 
         // PUT /jobsorders/1
         group.MapPut("/{id}", [Authorize] async (int id, UpdatedJobOrderDto updatedJobOrder, PrintingHouseContext dbContext) =>
@@ -77,7 +77,7 @@ public static class JobOrdersEndpoints
 
             return Results.NoContent();
 
-        });
+        }).RequireAuthorization();
 
         return group;
     }

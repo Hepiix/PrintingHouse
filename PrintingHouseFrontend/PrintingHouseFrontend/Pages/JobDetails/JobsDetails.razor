@@ -38,11 +38,15 @@ else
 }
 
 @code {
-    JobDetails[] jobsDetails = [];
+    JobDetails[] jobsDetails;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        jobsDetails = await client.GetJobsDetailsAsync();
+        if (firstRender)
+        {
+            jobsDetails = await client.GetJobsDetailsAsync();
+            StateHasChanged();
+        }
     }
 
     private string GetDeleteModalId(JobDetails jobDetails) => $"#{DeleteJobDetails.GetModalId(jobDetails)}";

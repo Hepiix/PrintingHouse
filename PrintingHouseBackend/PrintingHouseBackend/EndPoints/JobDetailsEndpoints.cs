@@ -19,7 +19,7 @@ public static class JobDetailsEndpoints
         group.MapGet("/", [Authorize] async (PrintingHouseContext dbContext) =>
             await dbContext.JobsDetails
                 .AsNoTracking()
-                .ToListAsync());
+                .ToListAsync()).RequireAuthorization();
 
         // GET /jobsdetails/1
         group.MapGet("/{id}", [Authorize] async (int id, PrintingHouseContext dbContext) =>
@@ -27,7 +27,7 @@ public static class JobDetailsEndpoints
             JobDetails? jobDetails = await dbContext.JobsDetails.FindAsync(id);
             return jobDetails is null ? Results.NotFound() : Results.Ok(jobDetails);
         })
-            .WithName(GetJobDetailsEndpointName);
+            .WithName(GetJobDetailsEndpointName).RequireAuthorization();
 
         // POST /jobsdetails
         group.MapPost("/", [Authorize] async (CreateJobDetailsDto newJobDetails, PrintingHouseContext dbContext) =>
@@ -37,7 +37,7 @@ public static class JobDetailsEndpoints
             await dbContext.SaveChangesAsync();
 
             return Results.CreatedAtRoute(GetJobDetailsEndpointName, new { id = jobDetails.Id }, jobDetails);
-        });
+        }).RequireAuthorization();
 
         // DELETE /jobsdetails/1
         group.MapDelete("/{id}", [Authorize] async (int id, PrintingHouseContext dbContext) =>
@@ -46,7 +46,7 @@ public static class JobDetailsEndpoints
                 .ExecuteDeleteAsync();
 
             return Results.NoContent();
-        });
+        }).RequireAuthorization();
 
         // PUT /jobsdetails/1
         group.MapPut("/{id}", [Authorize] async (int id, UpdatedJobDetailsDto updatedJobDetails, PrintingHouseContext dbContext) =>
@@ -62,7 +62,7 @@ public static class JobDetailsEndpoints
 
             await dbContext.SaveChangesAsync();
             return Results.NoContent();
-        });
+        }).RequireAuthorization();
         return group;
     }
 }

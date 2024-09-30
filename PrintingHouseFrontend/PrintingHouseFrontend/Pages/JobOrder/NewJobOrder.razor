@@ -48,10 +48,14 @@
     JobDetails[] jobDetails = [];
     Customer[] customers = [];
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        jobDetails = await JobDetailsClient.GetJobsDetailsAsync();
-        customers = await CustomersClient.GetCustomersAsync();
+        if (!firstRender)
+        {
+            jobDetails = await JobDetailsClient.GetJobsDetailsAsync();
+            customers = await CustomersClient.GetCustomersAsync();
+        }
+        StateHasChanged();
     }
 
     private async Task HandleSubmitAsync()

@@ -19,7 +19,8 @@ public static class CustomersEndpoints
         group.MapGet("/", [Authorize] async (PrintingHouseContext dbContext) =>
             await dbContext.Customers
                 .AsNoTracking()
-                .ToListAsync());
+                .ToListAsync())
+            .RequireAuthorization();
 
         // GET /customers/1
         group.MapGet("/{id}", [Authorize] async (int id, PrintingHouseContext dbContext) =>
@@ -38,7 +39,7 @@ public static class CustomersEndpoints
             await dbContext.SaveChangesAsync();
 
             return Results.CreatedAtRoute(GetCustomerEndpointName, new { id = customer.Id }, customer);
-        });
+        }).RequireAuthorization();
 
         // DELETE /customers/1
         group.MapDelete("/{id}", [Authorize] async (int id, PrintingHouseContext dbContext) =>
@@ -47,7 +48,7 @@ public static class CustomersEndpoints
                 .ExecuteDeleteAsync();
 
             return Results.NoContent();
-        });
+        }).RequireAuthorization();
 
         // PUT /customers/1
         group.MapPut("/{id}", [Authorize] async (int id, UpdatedCustomerDto updatedCustomer, PrintingHouseContext dbContext) =>
@@ -63,7 +64,7 @@ public static class CustomersEndpoints
 
             await dbContext.SaveChangesAsync();
             return Results.NoContent();
-        });
+        }).RequireAuthorization();
 
         return group;
     }

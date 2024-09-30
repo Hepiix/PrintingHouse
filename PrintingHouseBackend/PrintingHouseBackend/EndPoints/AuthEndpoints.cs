@@ -19,7 +19,7 @@ public static class AuthEndpoints
     public static RouteGroupBuilder MapAuthEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("auth");
-        const string AuthEndpoint = "GetAuth";
+
         // POST /auth/login
         group.MapPost("/login", async (LoginDto loginDto, PrintingHouseContext dbContext, IConfiguration config) =>
         {

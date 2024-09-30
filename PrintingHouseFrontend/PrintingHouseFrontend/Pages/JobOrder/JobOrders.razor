@@ -44,9 +44,14 @@ else
 @code {
     JobOrderViewModel[] jobOrders = [];
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        jobOrders = await JobOrderClient.GetJobOrdersAsync();
+        if (firstRender)
+        {
+            jobOrders = await JobOrderClient.GetJobOrdersAsync();
+            StateHasChanged();
+        }
+        
     }
 
     private string GetDeleteModalId(JobOrderViewModel jobOrder) => $"#{DeleteJobOrder.GetModalId(jobOrder)}";

@@ -38,27 +38,31 @@ else
     private string title = string.Empty;
     private string submitButton = string.Empty;
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (jobDetails is not null)
-            return;
+        if (!firstRender)
+        {
+            if (jobDetails is not null)
+                return;
 
-        if (Id is not null)
-        {
-            title = "Edit Job Details";
-            submitButton = "Save changes";
-            jobDetails = await client.GetJobDetailsAsync(Id.Value);
+            if (Id is not null)
+            {
+                title = "Edit Job Details";
+                submitButton = "Save changes";
+                jobDetails = await client.GetJobDetailsAsync(Id.Value);
+            }
+            else
+            {
+                jobDetails = new()
+                    {
+                        Name = string.Empty,
+                        Pattern = string.Empty
+                    };
+                title = "New Job Details";
+                submitButton = "Submit";
+            }
         }
-        else
-        {
-            jobDetails = new()
-                {
-                    Name = string.Empty,
-                    Pattern = string.Empty
-                };
-            title = "New Job Details";
-            submitButton = "Submit";
-        }
+        StateHasChanged();
     }
 
     private async Task HandleSubmitAsync()

@@ -72,28 +72,32 @@ else
     private JobDetails? oldJobDetails;
 
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        jobOrderViewModel = await JobOrderClient.GetJobOrderAsync(id);
-        jobDetails = await JobDetailsClient.GetJobsDetailsAsync();
-        customers = await CustomersClient.GetCustomersAsync();
+        if (!firstRender)
+        {
+            jobOrderViewModel = await JobOrderClient.GetJobOrderAsync(id);
+            jobDetails = await JobDetailsClient.GetJobsDetailsAsync();
+            customers = await CustomersClient.GetCustomersAsync();
 
-        oldJobDetails = jobDetails.FirstOrDefault(j => j.Name == jobOrderViewModel.JobName);
-        oldCustomer = customers.FirstOrDefault(c => c.Name ==
-            (jobOrderViewModel.CustomerName.IndexOf(' ') > 0 ?
-             jobOrderViewModel.CustomerName.Substring(0, jobOrderViewModel.CustomerName.IndexOf(' '))
-             : jobOrderViewModel.CustomerName));
-        if (jobOrderEntity is not null)
-            return;
+            oldJobDetails = jobDetails.FirstOrDefault(j => j.Name == jobOrderViewModel.JobName);
+            oldCustomer = customers.FirstOrDefault(c => c.Name ==
+                (jobOrderViewModel.CustomerName.IndexOf(' ') > 0 ?
+                 jobOrderViewModel.CustomerName.Substring(0, jobOrderViewModel.CustomerName.IndexOf(' '))
+                 : jobOrderViewModel.CustomerName));
+            if (jobOrderEntity is not null)
+                return;
 
-        jobOrderEntity = new()
-            {
-                CustomerId = oldCustomer.Id,
-                JobDetailsId = oldJobDetails.Id,
-                OrderDate = jobOrderViewModel.OrderDate,
-                Status = jobOrderViewModel.Status
-            };
+            jobOrderEntity = new()
+                {
+                    CustomerId = oldCustomer.Id,
+                    JobDetailsId = oldJobDetails.Id,
+                    OrderDate = jobOrderViewModel.OrderDate,
+                    Status = jobOrderViewModel.Status
+                };
 
+        }
+        StateHasChanged();
     }
 
     private async Task HandleSubmitAsync()
