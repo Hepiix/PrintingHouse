@@ -10,7 +10,14 @@ public static class JobDetailsMapping
         return new JobDetails()
         {
             Name = jobDetails.Name,
-            Pattern = jobDetails.Pattern
+            Pattern = jobDetails.Pattern,
+            Quantity = jobDetails.Quantity,
+            PaperType = jobDetails.PaperType,
+            Dimensions = jobDetails.Dimensions,
+            ColorMode = jobDetails.ColorMode,
+            PrintSides = jobDetails.PrintSides,
+            UnitPrice = jobDetails.UnitPrice,
+            TotalPrice = jobDetails.TotalPrice
         };
     }
 
@@ -20,7 +27,14 @@ public static class JobDetailsMapping
         {
             Id = id,
             Name = jobDetails.Name,
-            Pattern = jobDetails.Pattern
+            Pattern = jobDetails.Pattern,
+            Quantity = jobDetails.Quantity,
+            PaperType = jobDetails.PaperType,
+            Dimensions = jobDetails.Dimensions,
+            ColorMode = jobDetails.ColorMode,
+            PrintSides = jobDetails.PrintSides,
+            UnitPrice = jobDetails.UnitPrice,
+            TotalPrice = jobDetails.TotalPrice
         };
     }
 }

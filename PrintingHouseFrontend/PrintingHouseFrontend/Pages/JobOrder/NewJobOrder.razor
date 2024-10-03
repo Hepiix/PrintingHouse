@@ -31,8 +31,21 @@
     </InputSelect>
     <label for="orderDate">Order Date</label>
     <InputDate class="form-control" id="orderDate" @bind-Value="jobOrderEntity.OrderDate" />
+    
+    <label for="deliveryMethod">Delivery Method</label>
+    <InputSelect class="form-control" id="status" @bind-Value="@jobOrderEntity.DeliveryMethod">
+        <option value="">--- Select ---</option>
+        <option value="Courier">Courier</option>
+        <option value="Self Pickup">Self Pickup</option>
+    </InputSelect>
+
     <label for="status">Status</label>
-    <InputCheckbox class="form-check-input mb-3" id="status" @bind-Value="jobOrderEntity.Status" />
+    <InputSelect class="form-control" id="status" @bind-Value="@jobOrderEntity.Status">
+        <option value="">--- Select ---</option>
+        <option value="Pending">Pending</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+    </InputSelect>
     <br />
     <button class="btn btn-success" type="submit">Save Changes</button>
     <a role="button" class="btn btn-danger" href="/joborders">Cancel</a>
@@ -42,7 +55,9 @@
 @code {
     private JobOrderEntity jobOrderEntity = new JobOrderEntity
     {
-        OrderDate = DateOnly.FromDateTime(DateTime.Today)
+        OrderDate = DateOnly.FromDateTime(DateTime.Today),
+        Status = string.Empty,
+        DeliveryMethod = string.Empty
     };
 
     JobDetails[] jobDetails = [];
@@ -52,8 +67,15 @@
     {
         if (!firstRender)
         {
-            jobDetails = await JobDetailsClient.GetJobsDetailsAsync();
-            customers = await CustomersClient.GetCustomersAsync();
+            if (jobDetails.Length <= 0 || customers.Length <= 0)
+            {
+                jobDetails = await JobDetailsClient.GetJobsDetailsAsync();
+                customers = await CustomersClient.GetCustomersAsync();
+            }
+            else
+            {
+                return;
+            }
         }
         StateHasChanged();
     }

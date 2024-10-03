@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrintingHouseBackend.Data;
 
@@ -11,9 +12,11 @@ using PrintingHouseBackend.Data;
 namespace PrintingHouseBackend.Migrations
 {
     [DbContext(typeof(PrintingHouseContext))]
-    partial class PrintingHouseContextModelSnapshot : ModelSnapshot
+    [Migration("20241003114329_newModels2")]
+    partial class newModels2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,6 +173,10 @@ namespace PrintingHouseBackend.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -191,6 +198,7 @@ namespace PrintingHouseBackend.Migrations
                             Pattern = "BC-001",
                             PrintSides = "Double",
                             Quantity = 500,
+                            Status = "Pending",
                             TotalPrice = 100.00m,
                             UnitPrice = 0.20m
                         },
@@ -204,6 +212,7 @@ namespace PrintingHouseBackend.Migrations
                             Pattern = "FL-002",
                             PrintSides = "Single",
                             Quantity = 1000,
+                            Status = "In Progress",
                             TotalPrice = 150.00m,
                             UnitPrice = 0.15m
                         },
@@ -217,6 +226,7 @@ namespace PrintingHouseBackend.Migrations
                             Pattern = "PO-003",
                             PrintSides = "Single",
                             Quantity = 200,
+                            Status = "Completed",
                             TotalPrice = 500.00m,
                             UnitPrice = 2.50m
                         },
@@ -230,6 +240,7 @@ namespace PrintingHouseBackend.Migrations
                             Pattern = "BR-004",
                             PrintSides = "Double",
                             Quantity = 300,
+                            Status = "Pending",
                             TotalPrice = 300.00m,
                             UnitPrice = 1.00m
                         },
@@ -243,6 +254,7 @@ namespace PrintingHouseBackend.Migrations
                             Pattern = "ST-005",
                             PrintSides = "Single",
                             Quantity = 1000,
+                            Status = "In Progress",
                             TotalPrice = 500.00m,
                             UnitPrice = 0.50m
                         });

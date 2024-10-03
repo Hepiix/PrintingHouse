@@ -3,6 +3,7 @@
 @inject JobDetailsClient client
 @inject NavigationManager NavigationManager
 
+
 <h3>@title</h3>
 
 @if (jobDetails is null)
@@ -22,6 +23,48 @@ else
 
         <label for="pattern">Pattern</label>
         <InputText class="form-control" id="pattern" @bind-Value="@jobDetails.Pattern" />
+
+        <label for="quantity">Quantity</label>
+        <InputNumber class="form-control" id="quantity" @bind-Value="@jobDetails.Quantity" @onfocusout="CalculateTotal" />
+
+        <label for="paperType">Paper Type</label>
+        <InputSelect class="form-control" id="paperType" @bind-Value="@jobDetails.PaperType">
+            <option value="">--- Select ---</option>
+            <option value="Glossy">Glossy</option>
+            <option value="Matte">Matte</option>
+            <option value="Satin">Satin</option>
+            <option value="Vinyl">Vinyl</option>
+        </InputSelect>
+
+        <label for="dimensions">Dimensions</label>
+        <InputSelect class="form-control" id="dimensions" @bind-Value="@jobDetails.Dimensions">
+            <option value="">--- Select ---</option>
+            <option value="3.5x2 inches">3.5x2 inches</option>
+            <option value="8.5x11 inches">8.5x11 inches</option>
+            <option value="18x24 inches">18x24 inches</option>
+            <option value="4x4 inches">4x4 inches</option>
+        </InputSelect>
+
+        <label for="colorMode">Color Mode</label>
+        <InputSelect class="form-control" id="colorMode" @bind-Value="@jobDetails.ColorMode">
+            <option value="">--- Select ---</option>
+            <option value="Full Color">Full Color</option>
+            <option value="Duotone">Duotone</option>
+            <option value="Grayscale">Grayscale</option>
+        </InputSelect>
+
+        <label for="printSides">Print Sides</label>
+        <InputSelect class="form-control" id="printSides" @bind-Value="@jobDetails.PrintSides">
+            <option value="">--- Select ---</option>
+            <option value="Single">Single</option>
+            <option value="Double">Double</option>
+        </InputSelect>
+
+        <label for="unitPrice">Unit Price</label>
+        <InputNumber class="form-control" id="unitPrice" @bind-Value="@jobDetails.UnitPrice" @onfocusout="CalculateTotal" />
+
+        <label for="totalPrice">Total Price</label>
+        <InputNumber class="form-control" id="totalPrice" @bind-Value="@jobDetails.TotalPrice" />
         <br />
         <button class="btn btn-success" type="submit">@submitButton</button>
         <a class="btn btn-danger" role="button" href="/jobsdetails">Cancel</a>
@@ -56,13 +99,25 @@ else
                 jobDetails = new()
                     {
                         Name = string.Empty,
-                        Pattern = string.Empty
+                        Pattern = string.Empty,
+                        Quantity = 0,
+                        PaperType = string.Empty,
+                        Dimensions = string.Empty,
+                        ColorMode = string.Empty,
+                        PrintSides = string.Empty,
+                        UnitPrice = 0,
+                        TotalPrice = 0,
                     };
                 title = "New Job Details";
                 submitButton = "Submit";
             }
         }
         StateHasChanged();
+    }
+
+    private void CalculateTotal()
+    {
+        jobDetails.TotalPrice = jobDetails.Quantity * jobDetails.UnitPrice;
     }
 
     private async Task HandleSubmitAsync()

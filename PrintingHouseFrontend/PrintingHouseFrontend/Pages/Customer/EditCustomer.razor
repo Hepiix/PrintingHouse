@@ -32,6 +32,24 @@ else
 
         <label for="phoneNumber">Phone Number</label>
         <InputText class="form-control" id="phoneNumber" @bind-Value="customer.PhoneNumber" />
+
+        <label for="email">Email</label>
+        <InputText class="form-control" id="email" @bind-Value="customer.Email" />
+
+        <label for="streetAddress">Street Address</label>
+        <InputText class="form-control" id="streetAddress" @bind-Value="customer.StreetAddress" />
+
+        <label for="city">City</label>
+        <InputText class="form-control" id="city" @bind-Value="customer.City" />
+
+        <label for="state">State</label>
+        <InputText class="form-control" id="state" @bind-Value="customer.State" />
+
+        <label for="postalCode">Postal Code</label>
+        <InputText class="form-control" id="postalCode" @bind-Value="customer.PostalCode" />
+
+        <label for="country">Country</label>
+        <InputText class="form-control" id="country" @bind-Value="customer.Country" />
         <br />
         <button class="btn btn-success" type="submit">@submitButton</button>
 
@@ -72,7 +90,13 @@ else
                         Name = string.Empty,
                         Surname = string.Empty,
                         Company = string.Empty,
-                        PhoneNumber = string.Empty
+                        PhoneNumber = string.Empty,
+                        Email = string.Empty,
+                        StreetAddress = string.Empty,
+                        City = string.Empty,
+                        State = string.Empty,
+                        PostalCode = string.Empty,
+                        Country = string.Empty
                     };
 
                 title = "New Customer";

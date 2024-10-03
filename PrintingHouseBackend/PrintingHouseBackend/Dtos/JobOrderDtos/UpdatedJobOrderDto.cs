@@ -8,5 +8,6 @@ public record class UpdatedJobOrderDto(
     int JobDetailsId,
     JobDetails JobDetails,
     DateOnly OrderDate,
-    bool Status
+    string Status,
+    string DeliveryMethod
     );

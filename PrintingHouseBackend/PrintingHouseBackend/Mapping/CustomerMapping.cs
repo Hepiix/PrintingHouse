@@ -12,7 +12,13 @@ public static class CustomerMapping
             Name = customer.Name,
             Surname = customer.Surname,
             Company = customer.Company,
-            PhoneNumber = customer.PhoneNumber
+            PhoneNumber = customer.PhoneNumber,
+            Email = customer.Email,
+            StreetAddress = customer.StreetAddress,
+            City = customer.City,
+            State = customer.State,
+            PostalCode = customer.PostalCode,
+            Country = customer.Country
         };
     }
 
@@ -24,7 +30,13 @@ public static class CustomerMapping
             Name = customer.Name,
             Surname = customer.Surname,
             Company = customer.Company,
-            PhoneNumber = customer.PhoneNumber
+            PhoneNumber = customer.PhoneNumber,
+            Email = customer.Email,
+            StreetAddress = customer.StreetAddress,
+            City = customer.City,
+            State = customer.State,
+            PostalCode = customer.PostalCode,
+            Country = customer.Country
         };
     }
 }

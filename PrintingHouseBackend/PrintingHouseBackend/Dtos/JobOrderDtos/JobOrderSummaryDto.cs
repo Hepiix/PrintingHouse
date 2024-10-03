@@ -5,4 +5,5 @@ public record class JobOrderSummaryDto(
     string CustomerName,
     string JobName,
     DateOnly OrderDate,
-    bool Status);
+    string Status,
+    string DeliveryMethod);

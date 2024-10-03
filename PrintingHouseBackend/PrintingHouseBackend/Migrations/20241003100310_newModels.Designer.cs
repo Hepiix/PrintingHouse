@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrintingHouseBackend.Data;
 
@@ -11,9 +12,11 @@ using PrintingHouseBackend.Data;
 namespace PrintingHouseBackend.Migrations
 {
     [DbContext(typeof(PrintingHouseContext))]
-    partial class PrintingHouseContextModelSnapshot : ModelSnapshot
+    [Migration("20241003100310_newModels")]
+    partial class newModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,6 +173,10 @@ namespace PrintingHouseBackend.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -191,6 +198,7 @@ namespace PrintingHouseBackend.Migrations
                             Pattern = "BC-001",
                             PrintSides = "Double",
                             Quantity = 500,
+                            Status = "Pending",
                             TotalPrice = 100.00m,
                             UnitPrice = 0.20m
                         },
@@ -204,6 +212,7 @@ namespace PrintingHouseBackend.Migrations
                             Pattern = "FL-002",
                             PrintSides = "Single",
                             Quantity = 1000,
+                            Status = "In Progress",
                             TotalPrice = 150.00m,
                             UnitPrice = 0.15m
                         },
@@ -217,6 +226,7 @@ namespace PrintingHouseBackend.Migrations
                             Pattern = "PO-003",
                             PrintSides = "Single",
                             Quantity = 200,
+                            Status = "Completed",
                             TotalPrice = 500.00m,
                             UnitPrice = 2.50m
                         },
@@ -230,6 +240,7 @@ namespace PrintingHouseBackend.Migrations
                             Pattern = "BR-004",
                             PrintSides = "Double",
                             Quantity = 300,
+                            Status = "Pending",
                             TotalPrice = 300.00m,
                             UnitPrice = 1.00m
                         },
@@ -243,6 +254,7 @@ namespace PrintingHouseBackend.Migrations
                             Pattern = "ST-005",
                             PrintSides = "Single",
                             Quantity = 1000,
+                            Status = "In Progress",
                             TotalPrice = 500.00m,
                             UnitPrice = 0.50m
                         });
@@ -268,6 +280,10 @@ namespace PrintingHouseBackend.Migrations
                     b.Property<DateOnly>("OrderDate")
                         .HasColumnType("date");
 
+                    b.Property<string>("OrderNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
@@ -287,6 +303,7 @@ namespace PrintingHouseBackend.Migrations
                             DeliveryMethod = "Courier",
                             JobDetailsId = 1,
                             OrderDate = new DateOnly(2024, 9, 20),
+                            OrderNumber = "ORD-001",
                             Status = "Pending"
                         },
                         new
@@ -296,6 +313,7 @@ namespace PrintingHouseBackend.Migrations
                             DeliveryMethod = "Self Pickup",
                             JobDetailsId = 2,
                             OrderDate = new DateOnly(2024, 9, 21),
+                            OrderNumber = "ORD-002",
                             Status = "In Progress"
                         },
                         new
@@ -305,6 +323,7 @@ namespace PrintingHouseBackend.Migrations
                             DeliveryMethod = "Courier",
                             JobDetailsId = 3,
                             OrderDate = new DateOnly(2024, 9, 22),
+                            OrderNumber = "ORD-003",
                             Status = "Completed"
                         },
                         new
@@ -314,6 +333,7 @@ namespace PrintingHouseBackend.Migrations
                             DeliveryMethod = "Courier",
                             JobDetailsId = 4,
                             OrderDate = new DateOnly(2024, 9, 23),
+                            OrderNumber = "ORD-004",
                             Status = "Pending"
                         },
                         new
@@ -323,6 +343,7 @@ namespace PrintingHouseBackend.Migrations
                             DeliveryMethod = "Courier",
                             JobDetailsId = 5,
                             OrderDate = new DateOnly(2024, 9, 24),
+                            OrderNumber = "ORD-005",
                             Status = "In Progress"
                         });
                 });

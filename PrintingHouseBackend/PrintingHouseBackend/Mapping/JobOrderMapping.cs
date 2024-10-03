@@ -12,7 +12,8 @@ public static class JobOrderMapping
             $"{i.Customer!.Name} {i.Customer.Surname}",
             i.JobDetails!.Name,
             i.OrderDate,
-            i.Status)).ToList();
+            i.Status,
+            i.DeliveryMethod)).ToList();
 
         return jobOrdersDto;
     }
@@ -26,7 +27,8 @@ public static class JobOrderMapping
             customerName,
             jobOrder.JobDetails!.Name,
             jobOrder.OrderDate,
-            jobOrder.Status
+            jobOrder.Status,
+            jobOrder.DeliveryMethod
             );
     }
 
@@ -39,7 +41,8 @@ public static class JobOrderMapping
             JobDetailsId = jobOrder.JobDetailsId,
             JobDetails = jobOrder.JobDetails,
             OrderDate = jobOrder.OrderDate,
-            Status = jobOrder.Status
+            Status = jobOrder.Status,
+            DeliveryMethod = jobOrder.DeliveryMethod
         };
     }
 
@@ -53,7 +56,8 @@ public static class JobOrderMapping
             JobDetailsId = jobOrder.JobDetailsId,
             JobDetails = jobOrder.JobDetails,
             OrderDate = jobOrder.OrderDate,
-            Status = jobOrder.Status
+            Status = jobOrder.Status,
+            DeliveryMethod = jobOrder.DeliveryMethod
         };
     }
 }
