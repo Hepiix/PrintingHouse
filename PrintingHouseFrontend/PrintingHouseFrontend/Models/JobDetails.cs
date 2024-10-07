@@ -14,10 +14,6 @@ public class JobDetails
     [StringLength(30, ErrorMessage = "Pattern cannot exceed 30 characters.")]
     public required string Pattern { get; set; }
 
-    [Required(ErrorMessage = "Quantity is required.")]
-    [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1.")]
-    public required int Quantity { get; set; }
-
     [Required(ErrorMessage = "Paper Type is required.")]
     public required string PaperType { get; set; }
 
@@ -33,8 +29,4 @@ public class JobDetails
     [Required(ErrorMessage = "Unit Price is required.")]
     [Range(0.01, double.MaxValue, ErrorMessage = "Unit Price must be greater than zero.")]
     public required decimal UnitPrice { get; set; }
-
-    [Required(ErrorMessage = "Total Price is required.")]
-    [Range(0.01, double.MaxValue, ErrorMessage = "Total Price must be greater than zero.")]
-    public required decimal TotalPrice { get; set; }
 }

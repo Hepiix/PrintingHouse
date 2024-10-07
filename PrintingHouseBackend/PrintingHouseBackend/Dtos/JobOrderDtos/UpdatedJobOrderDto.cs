@@ -8,6 +8,8 @@ public record class UpdatedJobOrderDto(
     int JobDetailsId,
     JobDetails JobDetails,
     DateOnly OrderDate,
+    int Quantity,
+    decimal TotalPrice,
     string Status,
     string DeliveryMethod
     );

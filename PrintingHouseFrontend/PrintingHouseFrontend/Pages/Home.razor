@@ -1,11 +1,61 @@
 ﻿@page "/"
-@inject CustomersClient CustomersClient
+@inject JobOrderClient client
+@inject NavigationManager navManager
 
 <PageTitle>Home</PageTitle>
+@if(jobOrders is not null)
+{
+    <div class="container-fluid text-center">
+        <div class="row gy-5">
+            <div class="col-6 border rounded">
+                <div class="p-3">Pending job orders: @totalPendingJobOrders</div>
+            </div>
+            <div class="col-6 border rounded">
+                <div class="p-3">Total job orders: @totalJobOrders</div>
+            </div>
+            <div class="col-6 border rounded">
+                <div class="p-3">In progress job orders: @totalInProgressJobOrders</div>
+            </div>
+            <div class="col-6 border rounded">
+                <div class="p-3">Earnings: @totalPrice</div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h1> <a href="/login">Login</a> first!</h1>
+}
 
-<a href="/customers">Customers</a>
-<a href="/jobsdetails">Jobs Details</a>
-<a href="/joborders">Jobs Orders</a>
-<a href="/login">Login</a>
-<a href="/register">Register</a>
 
+@code{
+    JobOrderViewModel[] jobOrders;
+    int totalJobOrders;
+    int totalPendingJobOrders;
+    int totalInProgressJobOrders;
+    decimal totalPrice = 0;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            jobOrders = await client.GetJobOrdersAsync();
+            GetData();
+            StateHasChanged();
+        }
+    }
+
+    private void GetData()
+    {
+        totalJobOrders = jobOrders.Count();
+
+        totalPendingJobOrders = jobOrders.Where(u => u.Status == "Pending").Count();
+
+        totalInProgressJobOrders = jobOrders.Where(u => u.Status == "In Progress").Count();
+
+        foreach (var joborder in jobOrders.Where(u => u.Status == "Completed"))
+        {
+            totalPrice += joborder.TotalPrice;
+        }
+    }
+}

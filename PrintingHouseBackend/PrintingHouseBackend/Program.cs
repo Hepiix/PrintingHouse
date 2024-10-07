@@ -10,10 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 var connString = builder.Configuration.GetConnectionString("PrintingHouse");
 builder.Services.AddDbContext<PrintingHouseContext>(options =>
     options.UseSqlServer(connString));
-
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secret = Encoding.ASCII.GetBytes(jwtSettings["Secret"]);
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazorClient", builder =>
@@ -24,7 +22,6 @@ builder.Services.AddCors(options =>
                .AllowCredentials();
     });
 });
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

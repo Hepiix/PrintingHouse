@@ -21,7 +21,6 @@ public class AuthService : DelegatingHandler
             var token = await _localStorage.GetItemAsStringAsync("token");
             if (!string.IsNullOrWhiteSpace(token))
             {
-                // Add the JWT token to the request headers
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
         }
@@ -30,10 +29,6 @@ public class AuthService : DelegatingHandler
             Console.WriteLine("Client not rendered");
             return await base.SendAsync(request, cancellationToken);
         }
-
-
-
-        // Proceed with the request
         return await base.SendAsync(request, cancellationToken);
     }
 }

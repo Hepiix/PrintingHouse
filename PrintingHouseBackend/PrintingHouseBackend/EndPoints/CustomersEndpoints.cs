@@ -37,7 +37,6 @@ public static class CustomersEndpoints
             Customer customer = newCustomer.ToEntity();
             dbContext.Customers.Add(customer);
             await dbContext.SaveChangesAsync();
-
             return Results.CreatedAtRoute(GetCustomerEndpointName, new { id = customer.Id }, customer);
         }).RequireAuthorization();
 
@@ -46,7 +45,6 @@ public static class CustomersEndpoints
         {
             await dbContext.Customers.Where(customer => customer.Id == id)
                 .ExecuteDeleteAsync();
-
             return Results.NoContent();
         }).RequireAuthorization();
 
@@ -54,18 +52,14 @@ public static class CustomersEndpoints
         group.MapPut("/{id}", [Authorize] async (int id, UpdatedCustomerDto updatedCustomer, PrintingHouseContext dbContext) =>
         {
             var existingCustomer = await dbContext.Customers.FindAsync(id);
-
             if (existingCustomer is null)
                 return Results.NotFound();
-
             dbContext.Entry(existingCustomer)
             .CurrentValues
             .SetValues(updatedCustomer.ToEntity(id));
-
             await dbContext.SaveChangesAsync();
             return Results.NoContent();
         }).RequireAuthorization();
-
         return group;
     }
 }

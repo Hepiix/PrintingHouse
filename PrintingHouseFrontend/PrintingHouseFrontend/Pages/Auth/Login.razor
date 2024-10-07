@@ -4,6 +4,10 @@
 @inject ILocalStorageService localStorage
 
 <h3>Login</h3>
+@if (!isSuccessful)
+{
+    <h5 class="text-danger">Login failed!</h5>
+}
 <EditForm Model="@user"
     FormName="login"
     OnValidSubmit="@HandleSubmitAsync"
@@ -23,6 +27,7 @@
 @code {
     [SupplyParameterFromForm]
     private UserData? user { get; set; }
+    bool isSuccessful = true;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -35,12 +40,19 @@
 
     private async Task HandleSubmitAsync()
     {
-        var response = await client.LoginUserAsync(user!);
-        AuthToken? token = await response.Content.ReadFromJsonAsync<AuthToken>();
-        Console.WriteLine(token);
-        await localStorage.SetItemAsStringAsync("token", token.Token);
-
-        NavigationManager.NavigateTo("/");
+        try
+        {
+            var response = await client.LoginUserAsync(user!);
+            AuthToken? token = await response.Content.ReadFromJsonAsync<AuthToken>();
+            await localStorage.SetItemAsStringAsync("token", token.Token);
+            await localStorage.SetItemAsStringAsync("username", token.UserName);
+            NavigationManager.NavigateTo("/");
+            NavigationManager.Refresh();
+        }
+        catch
+        {
+            isSuccessful = false;
+        }
 
     }
 }

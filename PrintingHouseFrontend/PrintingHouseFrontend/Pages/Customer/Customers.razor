@@ -2,62 +2,79 @@
 @inject CustomersClient CustomersClient
 @inject NavigationManager NavigationManager
 
-<h3>Customers</h3>
-@if(customers is null)
+@if (!isAuthorized)
 {
-    <h1>Loading...</h1>
+    <h1>Unauthorized, please <a href="/login">login</a>.</h1>
 }
 else
 {
-    <div>
-    
-    <table class="table table-dark table-hover table-bordered caption-top table-align-middle">
-        <caption>List of all customers</caption>
-        <thead class="table-light align-middle">
-            <th class="text-center" scope="col" style="width: 5%;">Id</th>
-            <th scope="col">Name</th>
-            <th scope="col">Surname</th>
-            <th scope="col" style="width: 25%;">Company</th>
-            <th class="text-center" scope="col" style="width: 12%;">Phone Number</th>
-            <th>Email</th>
-            <th>Address</th>
-            <th class="text-center" scope="col" style="width: 12%;"><a href="editcustomers/" class="btn btn-success"><i class="bi bi-person-plus"></i> Add new</a></th>
-        </thead>
-        <tbody class="table-group-divider">
-            @foreach (var customer in customers)
-            {
-                <tr class="align-middle">
-                    <td class="text-center">@customer.Id</td>
-                    <td>@customer.Name</td>
-                    <td>@customer.Surname</td>
-                    <td>@customer.Company</td>
-                    <td class="text-center">@customer.PhoneNumber</td>
-                    <td>@customer.Email</td>
-                    <td>@customer.StreetAddress @customer.City @customer.State @customer.PostalCode @customer.Country</td>
-                    <td class="text-center"><a href="editcustomers/@customer.Id" class="btn btn-primary"><i class="bi bi-pencil"></i>
-                        </a> <button class="btn btn-danger"
-                            data-bs-toggle="modal"
-                            data-bs-target="@GetDeleteModalId(customer)"><i class="bi bi-trash3"></i>
-                            </button>
-                            <DeleteCustomer customer="@customer" />
-                        </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-}
+    @if (customers is null)
+    {
+        <h1>Loading...</h1>
+    }
+    else
+    {
+        <div>
 
+            <table class="table table-dark table-hover table-bordered caption-top table-align-middle">
+                <caption>List of all customers</caption>
+                <thead class="table-light align-middle">
+                <th class="text-center" scope="col" style="width: 5%;">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Surname</th>
+                <th scope="col" style="width: 25%;">Company</th>
+                <th class="text-center" scope="col" style="width: 12%;">Phone Number</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th class="text-center" scope="col" style="width: 12%;"><a href="editcustomers/" class="btn btn-success"><i class="bi bi-person-plus"></i> Add new</a></th>
+                </thead>
+                <tbody class="table-group-divider">
+                    @foreach (var customer in customers)
+                    {
+                        <tr class="align-middle">
+                            <td class="text-center">@customer.Id</td>
+                            <td>@customer.Name</td>
+                            <td>@customer.Surname</td>
+                            <td>@customer.Company</td>
+                            <td class="text-center">@customer.PhoneNumber</td>
+                            <td>@customer.Email</td>
+                            <td>@customer.StreetAddress @customer.City @customer.State @customer.PostalCode @customer.Country</td>
+                            <td class="text-center">
+                                <a href="editcustomers/@customer.Id" class="btn btn-primary">
+                                    <i class="bi bi-pencil"></i>
+                                </a> <button class="btn btn-danger"
+                                             data-bs-toggle="modal"
+                                             data-bs-target="@GetDeleteModalId(customer)">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                                <DeleteCustomer customer="@customer" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}
 
 @code {
     Customer[] customers;
+    bool isAuthorized = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            customers = await CustomersClient.GetCustomersAsync();
-            StateHasChanged();
+            try
+            {
+                isAuthorized = true;
+                customers = await CustomersClient.GetCustomersAsync();
+                StateHasChanged();
+            }
+            catch
+            {
+                isAuthorized = false;
+            }
         }
     }
 

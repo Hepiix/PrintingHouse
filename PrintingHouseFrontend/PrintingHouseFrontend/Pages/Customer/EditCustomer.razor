@@ -7,68 +7,73 @@
 
 
 <h3>@title</h3>
-
-@if(customer is null)
+@if (!isAuthorized)
 {
-    <p>Loading...</p>
+    <h1>Unauthorized, please <a href="/login">login</a>.</h1>
 }
 else
 {
-    <div>
-    <EditForm Model="@customer"
-        FormName="editCustomer"
-        OnValidSubmit="HandleSubmitAsync"
-        Enhance>
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <label for="name">Name</label>
-        <InputText class="form-control" id="name" @bind-Value="customer.Name" />
-        
-        <label for="surname">Surname</label>
-        <InputText class="form-control" id="surname" @bind-Value="customer.Surname" />
+    @if (customer is null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        <div>
+            <EditForm Model="@customer"
+                      FormName="editCustomer"
+                      OnValidSubmit="HandleSubmitAsync"
+                      Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <label for="name">Name</label>
+                <InputText class="form-control" id="name" @bind-Value="customer.Name" />
 
-        <label for="company">Company</label>
-        <InputText class="form-control" id="company" @bind-Value="customer.Company" />
+                <label for="surname">Surname</label>
+                <InputText class="form-control" id="surname" @bind-Value="customer.Surname" />
 
-        <label for="phoneNumber">Phone Number</label>
-        <InputText class="form-control" id="phoneNumber" @bind-Value="customer.PhoneNumber" />
+                <label for="company">Company</label>
+                <InputText class="form-control" id="company" @bind-Value="customer.Company" />
 
-        <label for="email">Email</label>
-        <InputText class="form-control" id="email" @bind-Value="customer.Email" />
+                <label for="phoneNumber">Phone Number</label>
+                <InputText class="form-control" id="phoneNumber" @bind-Value="customer.PhoneNumber" />
 
-        <label for="streetAddress">Street Address</label>
-        <InputText class="form-control" id="streetAddress" @bind-Value="customer.StreetAddress" />
+                <label for="email">Email</label>
+                <InputText class="form-control" id="email" @bind-Value="customer.Email" />
 
-        <label for="city">City</label>
-        <InputText class="form-control" id="city" @bind-Value="customer.City" />
+                <label for="streetAddress">Street Address</label>
+                <InputText class="form-control" id="streetAddress" @bind-Value="customer.StreetAddress" />
 
-        <label for="state">State</label>
-        <InputText class="form-control" id="state" @bind-Value="customer.State" />
+                <label for="city">City</label>
+                <InputText class="form-control" id="city" @bind-Value="customer.City" />
 
-        <label for="postalCode">Postal Code</label>
-        <InputText class="form-control" id="postalCode" @bind-Value="customer.PostalCode" />
+                <label for="state">State</label>
+                <InputText class="form-control" id="state" @bind-Value="customer.State" />
 
-        <label for="country">Country</label>
-        <InputText class="form-control" id="country" @bind-Value="customer.Country" />
-        <br />
-        <button class="btn btn-success" type="submit">@submitButton</button>
+                <label for="postalCode">Postal Code</label>
+                <InputText class="form-control" id="postalCode" @bind-Value="customer.PostalCode" />
 
-        <a role="button" class="btn btn-danger" href="/customers">Cancel</a>
+                <label for="country">Country</label>
+                <InputText class="form-control" id="country" @bind-Value="customer.Country" />
+                <br />
+                <button class="btn btn-success" type="submit">@submitButton</button>
 
-    </EditForm>
-    </div>
+                <a role="button" class="btn btn-danger" href="/customers">Cancel</a>
+
+            </EditForm>
+        </div>
+    }
 }
+
 
 @code {
     [Parameter]
     public int? Id { get; set; }
-
     [SupplyParameterFromForm]
     private Customer? customer { get; set; }
-
     private string title = string.Empty;
     private string submitButton = string.Empty;
-
+    bool isAuthorized = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -81,10 +86,19 @@ else
             {
                 title = "Edit Customer";
                 submitButton = "Save changes";
-                customer = await CustomersClient.GetCustomerAsync(Id.Value);
+                try
+                {
+                    isAuthorized = true;
+                    customer = await CustomersClient.GetCustomerAsync(Id.Value);
+                }
+                catch
+                {
+                    isAuthorized = false;
+                }
             }
             else
             {
+                isAuthorized = true;
                 customer = new()
                     {
                         Name = string.Empty,
@@ -98,7 +112,6 @@ else
                         PostalCode = string.Empty,
                         Country = string.Empty
                     };
-
                 title = "New Customer";
                 submitButton = "Submit";
             }
@@ -115,7 +128,6 @@ else
             customer.Id = Id.Value;
             await CustomersClient.UpdateCustomerAsync(customer);
         }
-
         NavigationManager.NavigateTo("/customers");
     }
 }

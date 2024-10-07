@@ -8,6 +8,8 @@ public class JobOrder
     public int JobDetailsId { get; set; }
     public JobDetails? JobDetails { get; set; }
     public DateOnly OrderDate { get; set; }
+    public int Quantity { get; set; }
+    public decimal TotalPrice { get; set; }
     public string? Status { get; set; } = "Pending";
     public string? DeliveryMethod { get; set; } = "Courier";
 }

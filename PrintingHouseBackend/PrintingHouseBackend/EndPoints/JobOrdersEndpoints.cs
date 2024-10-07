@@ -23,10 +23,8 @@ public static class JobOrdersEndpoints
                 .Include(i => i.JobDetails)
                 .AsNoTracking()
                 .ToListAsync();
-
             return jobOrders is null ? Results.NotFound() : Results.Ok(jobOrders.ToJobOrdersSummaryDto());
         }).RequireAuthorization();
-
 
         // GET /jobsorders/1
         group.MapGet("/{id}", [Authorize] async (int id, PrintingHouseContext dbContext) =>
@@ -35,7 +33,6 @@ public static class JobOrdersEndpoints
                 .Include(i => i.Customer)
                 .Include(i => i.JobDetails)
                 .FirstOrDefaultAsync(i => i.Id == id);
-
             return jobOrder is null ? Results.NotFound() : Results.Ok(jobOrder.ToJobOrderSummaryDto());
         })
             .WithName(GetJobOrderEndpointName).RequireAuthorization();
@@ -44,12 +41,8 @@ public static class JobOrdersEndpoints
         group.MapPost("/", [Authorize] async (CreateJobOrderDto createdJobOrder, PrintingHouseContext dbContext) =>
         {
             JobOrder jobOrder = createdJobOrder.ToEntity();
-            //if (jobOrder.Customer is null || jobOrder.JobDetails is null)
-            //    return Results.BadRequest();
-            
             dbContext.JobsOrders.Add(jobOrder);
             await dbContext.SaveChangesAsync();
-
             return Results.CreatedAtRoute(GetJobOrderEndpointName, new { id = jobOrder.Id });
         }).RequireAuthorization();
 
@@ -58,7 +51,6 @@ public static class JobOrdersEndpoints
         {
             await dbContext.JobsOrders.Where(jobOrder => jobOrder.Id == id)
                 .ExecuteDeleteAsync();
-
             return Results.NoContent();
         }).RequireAuthorization();
 
@@ -68,17 +60,12 @@ public static class JobOrdersEndpoints
             var existingJobOrder = await dbContext.JobsOrders.FindAsync(id);
             if (existingJobOrder is null)
                 return Results.NotFound();
-
             dbContext.Entry(existingJobOrder)
                 .CurrentValues
                 .SetValues(updatedJobOrder.ToEntity(id));
-
             await dbContext.SaveChangesAsync();
-
             return Results.NoContent();
-
         }).RequireAuthorization();
-
         return group;
     }
 }

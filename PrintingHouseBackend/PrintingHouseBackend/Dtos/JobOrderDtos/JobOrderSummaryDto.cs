@@ -5,5 +5,7 @@ public record class JobOrderSummaryDto(
     string CustomerName,
     string JobName,
     DateOnly OrderDate,
+    int Quantity,
+    decimal TotalPrice,
     string Status,
     string DeliveryMethod);

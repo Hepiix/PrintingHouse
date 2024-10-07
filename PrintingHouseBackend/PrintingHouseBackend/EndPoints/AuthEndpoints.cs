@@ -34,16 +34,13 @@ public static class AuthEndpoints
             {
                 isValid = HashingPassword.Login(user.Password, plainPassword);
             }
-
             if (!isValid)
             {
                 return Results.NotFound("Password not correct");
             }
-
             // jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(config["JwtSettings:Secret"]);
-
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
@@ -56,18 +53,15 @@ public static class AuthEndpoints
                 Audience = config["JwtSettings:Audience"],
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
             };
-
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
-
-            return Results.Ok(new { Token = tokenString });
+            return Results.Ok(new { Token = tokenString, UserName = $"{user.FirstName} {user.LastName}" });
         });
 
         // POST auth/register
         group.MapPost("/register", async (RegisterDto newUser, PrintingHouseContext dbContext) =>
         {
             UserModel user = newUser.ToEntity();
-            
             if(dbContext.UsersData.FirstOrDefault(u => u.Email == user.Email) is null)
             {
                 user.Password = HashingPassword.HashPassword(user.Password);
@@ -79,10 +73,7 @@ public static class AuthEndpoints
             {
                 return Results.Conflict();
             }
-
-            
         });
-
         return group;
     }
 }
