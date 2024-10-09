@@ -8,4 +8,5 @@ public record class JobOrderSummaryDto(
     int Quantity,
     decimal TotalPrice,
     string Status,
-    string DeliveryMethod);
+    string DeliveryMethod,
+    string CustomerNote);

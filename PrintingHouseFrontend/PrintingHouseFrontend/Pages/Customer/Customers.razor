@@ -17,7 +17,14 @@ else
         <div>
 
             <table class="table table-dark table-hover table-bordered caption-top table-align-middle">
-                <caption>List of all customers</caption>
+                <caption>List of all customers
+                    <InputSelect @bind-Value="currentSortColumn" class="form-select" @onfocusout="() => SortTable(currentSortColumn)">
+                        <option value="">Select Sort Option</option>
+                        <option value="Id">Id</option>
+                        <option value="Name">Name</option>
+                        <option value="Surname">Surname</option>
+                    </InputSelect>
+                </caption>
                 <thead class="table-light align-middle">
                 <th class="text-center" scope="col" style="width: 5%;">Id</th>
                 <th scope="col">Name</th>
@@ -58,8 +65,10 @@ else
 }
 
 @code {
-    Customer[] customers;
+    List<Customer> customers = new List<Customer>();
     bool isAuthorized = false;
+    private bool isAscending = false;
+    private string currentSortColumn;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -68,13 +77,46 @@ else
             try
             {
                 isAuthorized = true;
-                customers = await CustomersClient.GetCustomersAsync();
+                var customersArray = await CustomersClient.GetCustomersAsync();
+                customers = customersArray.ToList();
                 StateHasChanged();
             }
             catch
             {
                 isAuthorized = false;
             }
+        }
+    }
+
+    private void SortTable(string columnName)
+    {
+        if (currentSortColumn == columnName)
+            isAscending = !isAscending;
+        else
+        {
+            currentSortColumn = columnName;
+            isAscending = true;
+        }
+
+        switch (columnName)
+        {
+            case nameof(Customer.Id):
+                customers = isAscending
+                    ? customers.OrderBy(j => j.Id).ToList()
+                : customers.OrderByDescending(j => j.Id).ToList();
+                break;
+
+            case nameof(Customer.Name):
+                customers = isAscending
+                    ? customers.OrderBy(j => j.Name).ToList()
+                : customers.OrderByDescending(j => j.Name).ToList();
+                break;
+
+            case nameof(Customer.Surname):
+                customers = isAscending
+                    ? customers.OrderBy(j => j.Surname).ToList()
+                : customers.OrderByDescending(j => j.Surname).ToList();
+                break;
         }
     }
 

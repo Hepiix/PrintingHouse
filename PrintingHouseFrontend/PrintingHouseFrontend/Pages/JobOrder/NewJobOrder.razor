@@ -51,6 +51,8 @@ else
             <option value="Courier">Courier</option>
             <option value="Self Pickup">Self Pickup</option>
         </InputSelect>
+        <label for="customerNote">Customer Note</label>
+        <InputTextArea class="form-control comment-box" id="name" @bind-Value="jobOrderEntity.CustomerNote" />
         <br />
         <button class="btn btn-success" type="submit">Save Changes</button>
         <a role="button" class="btn btn-danger" href="/joborders">Cancel</a>
@@ -65,7 +67,8 @@ else
         Quantity = 0,
         TotalPrice = 0,
         Status = "Pending",
-        DeliveryMethod = string.Empty
+        DeliveryMethod = string.Empty,
+        CustomerNote = string.Empty
     };
     JobDetails[] jobDetails = [];
     Customer[] customers = [];

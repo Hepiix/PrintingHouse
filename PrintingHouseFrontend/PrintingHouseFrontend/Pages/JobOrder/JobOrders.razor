@@ -15,18 +15,29 @@ else
     }
     else
     {
-        <table class="table table-dark table-hover table-bordered caption-top table-align-middle">
-            <caption>List of all job orders</caption>
+        <table class="table table-dark table-hover table-bordered caption-top table-align-middle table-responsive">
+            <caption>
+                List of all job orders
+                <InputSelect @bind-Value="currentSortColumn" class="form-select" @onfocusout="() => SortTable(currentSortColumn)">
+                    <option value="">Select Sort Option</option>
+                    <option value="CustomerName">Customer Name</option>
+                    <option value="Id">Id</option>
+                    <option value="JobName">Job Name</option>
+                    <option value="OrderDate">Order Date</option>
+                    <option value="Status">Status</option>
+                </InputSelect>
+            </caption>
             <thead class="table-light align-middle">
-            <th class="text-center" style="width: 5%;">Id</th>
-            <th>Customer Name</th>
-            <th>Job Name</th>
-            <th class="text-center">Order Date</th>
-            <th>Quantity</th>
-            <th>Total Price</th>
-            <th>Delivery Method</th>
-            <th class="text-center">Status</th>
-            <th class="text-center" style="width: 12%;"><a href="newjoborder/" class="btn btn-success"><i class="bi bi-person-plus"></i> Add new</a></th>
+                <th class="text-center" style="width: 5%;">Id</th>
+                <th>Customer Name</th>
+                <th>Job Name</th>
+                <th class="text-center">Order Date</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Delivery Method</th>
+                <th class="text-center">Status</th>
+                <th>Customer Note</th>
+                <th class="text-center" style="width: 12%;"><a href="newjoborder/" class="btn btn-success"><i class="bi bi-person-plus"></i> Add new</a></th>
             </thead>
             <tbody>
                 @foreach (JobOrderViewModel jobOrder in jobOrders)
@@ -55,6 +66,11 @@ else
                         {
                             <td class="text-danger">Error</td>
                         }
+                        <td title="@jobOrder.CustomerNote">
+                            @((jobOrder.CustomerNote?.Length > 20)
+                                ? jobOrder.CustomerNote.Substring(0, 20) + "..."
+                                : jobOrder.CustomerNote)
+                        </td>
                         <td class="text-center">
                             <a href="editjoborder/@jobOrder.Id" class="btn btn-primary"><i class="bi bi-pencil"></i></a>
                             <button class="btn btn-danger"
@@ -72,8 +88,10 @@ else
 }
 
 @code {
-    JobOrderViewModel[] jobOrders = [];
+    List<JobOrderViewModel> jobOrders = new List<JobOrderViewModel>();
     bool isAuthorized = false;
+    private bool isAscending = false;
+    private string currentSortColumn;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -82,7 +100,8 @@ else
             try
             {
                 isAuthorized = true;
-                jobOrders = await JobOrderClient.GetJobOrdersAsync();
+                var jobOrdersArray = await JobOrderClient.GetJobOrdersAsync();
+                jobOrders = jobOrdersArray.ToList();
                 StateHasChanged();
             }
             catch
@@ -92,5 +111,48 @@ else
         }
     }
 
-    private string GetDeleteModalId(JobOrderViewModel jobOrder) => $"#{DeleteJobOrder.GetModalId(jobOrder)}";
-}
+    private void SortTable(string columnName)
+    {
+        if (currentSortColumn == columnName)
+            isAscending = !isAscending;
+        else
+        {
+            currentSortColumn = columnName;
+            isAscending = true;
+        }
+
+        switch (columnName)
+        {
+            case nameof(JobOrderViewModel.CustomerName):
+                jobOrders = isAscending
+                    ? jobOrders.OrderBy(j => j.CustomerName).ToList()
+                : jobOrders.OrderByDescending(j => j.CustomerName).ToList();
+                    break;
+
+            case nameof(JobOrderViewModel.JobName):
+                jobOrders = isAscending
+                    ? jobOrders.OrderBy(j => j.JobName).ToList()
+                : jobOrders.OrderByDescending(j => j.JobName).ToList();
+                break;
+
+            case nameof(JobOrderViewModel.Id):
+                jobOrders = isAscending
+                    ? jobOrders.OrderBy(j => j.Id).ToList()
+                : jobOrders.OrderByDescending(j => j.Id).ToList();
+                break;
+
+            case nameof(JobOrderViewModel.OrderDate):
+                jobOrders = isAscending
+                    ? jobOrders.OrderBy(j => j.OrderDate).ToList()
+                : jobOrders.OrderByDescending(j => j.OrderDate).ToList();
+                break;
+
+            case nameof(JobOrderViewModel.Status):
+                jobOrders = isAscending
+                    ? jobOrders.OrderBy(j => j.Status).ToList()
+                : jobOrders.OrderByDescending(j => j.Status).ToList();
+                break;
+        }
+    }
+
+    private string GetDeleteModalId(JobOrderViewModel jobOrder) => $"#{DeleteJobOrder.GetModalId(jobOrder)}";}

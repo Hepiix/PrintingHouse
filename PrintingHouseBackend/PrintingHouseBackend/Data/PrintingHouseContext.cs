@@ -227,7 +227,8 @@ public class PrintingHouseContext(DbContextOptions<PrintingHouseContext> options
                 Quantity = 100,
                 TotalPrice = 20m,
                 Status = "Pending",
-                DeliveryMethod = "Courier"
+                DeliveryMethod = "Courier",
+                CustomerNote = "Customer requested priority delivery due to an upcoming event."
             },
                 new JobOrder
                 {
@@ -238,7 +239,8 @@ public class PrintingHouseContext(DbContextOptions<PrintingHouseContext> options
                     Quantity = 100,
                     TotalPrice = 15m,
                     Status = "In Progress",
-                    DeliveryMethod = "Self Pickup"
+                    DeliveryMethod = "Self Pickup",
+                    CustomerNote = "Please notify the customer upon completion. Pickup is preferred before noon."
                 },
                 new JobOrder
                 {
@@ -249,7 +251,8 @@ public class PrintingHouseContext(DbContextOptions<PrintingHouseContext> options
                     Quantity = 100,
                     TotalPrice = 250m,
                     Status = "Completed",
-                    DeliveryMethod = "Courier"
+                    DeliveryMethod = "Courier",
+                    CustomerNote = "Package carefully for delivery. The customer mentioned fragile items inside."
                 },
                 new JobOrder
                 {
@@ -260,7 +263,8 @@ public class PrintingHouseContext(DbContextOptions<PrintingHouseContext> options
                     Quantity = 100,
                     TotalPrice = 100m,
                     Status = "Pending",
-                    DeliveryMethod = "Courier"
+                    DeliveryMethod = "Courier",
+                    CustomerNote = "Urgent order. Ensure timely dispatch by the end of the day."
                 },
                 new JobOrder
                 {
@@ -271,29 +275,30 @@ public class PrintingHouseContext(DbContextOptions<PrintingHouseContext> options
                     Quantity = 100,
                     TotalPrice = 50m,
                     Status = "In Progress",
-                    DeliveryMethod = "Courier"
+                    DeliveryMethod = "Courier",
+                    CustomerNote = "No specific instructions, but customer prefers a weekend delivery."
                 },
-                new JobOrder { Id = 6, CustomerId = 1, JobDetailsId = 1, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-10)), Quantity = 100, TotalPrice = 500.50m, Status = "Completed", DeliveryMethod = "Courier" },
-                new JobOrder { Id = 7, CustomerId = 2, JobDetailsId = 2, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-5)), Quantity = 200, TotalPrice = 1000.00m, Status = "Pending", DeliveryMethod = "Pickup" },
-                new JobOrder { Id = 8, CustomerId = 3, JobDetailsId = 3, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-8)), Quantity = 150, TotalPrice = 750.75m, Status = "Shipped", DeliveryMethod = "Courier" },
-                new JobOrder { Id = 9, CustomerId = 4, JobDetailsId = 4, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-12)), Quantity = 300, TotalPrice = 1500.00m, Status = "Completed", DeliveryMethod = "Courier" },
-                new JobOrder { Id = 10, CustomerId = 5, JobDetailsId = 5, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-3)), Quantity = 250, TotalPrice = 1250.25m, Status = "Processing", DeliveryMethod = "Courier" },
-                new JobOrder { Id = 11, CustomerId = 6, JobDetailsId = 6, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-15)), Quantity = 175, TotalPrice = 875.50m, Status = "Shipped", DeliveryMethod = "Pickup" },
-                new JobOrder { Id = 12, CustomerId = 7, JobDetailsId = 7, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-2)), Quantity = 100, TotalPrice = 500.00m, Status = "Pending", DeliveryMethod = "Courier" },
-                new JobOrder { Id = 13, CustomerId = 8, JobDetailsId = 8, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-7)), Quantity = 220, TotalPrice = 1100.00m, Status = "Processing", DeliveryMethod = "Courier" },
-                new JobOrder { Id = 14, CustomerId = 9, JobDetailsId = 9, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-9)), Quantity = 180, TotalPrice = 900.00m, Status = "Completed", DeliveryMethod = "Courier" },
-                new JobOrder { Id = 15, CustomerId = 10, JobDetailsId = 10, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), Quantity = 130, TotalPrice = 650.50m, Status = "Processing", DeliveryMethod = "Courier" },
+                new JobOrder { Id = 6, CustomerId = 1, JobDetailsId = 1, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-10)), Quantity = 100, TotalPrice = 500.50m, Status = "Completed", DeliveryMethod = "Courier", CustomerNote = "Customer requests follow-up email with delivery confirmation." },
+                new JobOrder { Id = 7, CustomerId = 2, JobDetailsId = 2, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-5)), Quantity = 200, TotalPrice = 1000.00m, Status = "Pending", DeliveryMethod = "Pickup", CustomerNote = "Ensure all items are packed properly. Customer will inspect upon pickup." },
+                new JobOrder { Id = 8, CustomerId = 3, JobDetailsId = 3, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-8)), Quantity = 150, TotalPrice = 750.75m, Status = "Shipped", DeliveryMethod = "Courier", CustomerNote = "Track delivery and provide status updates. The customer is concerned about delays." },
+                new JobOrder { Id = 9, CustomerId = 4, JobDetailsId = 4, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-12)), Quantity = 300, TotalPrice = 1500.00m, Status = "Completed", DeliveryMethod = "Courier", CustomerNote = "Handle with care. The order contains fragile components." },
+                new JobOrder { Id = 10, CustomerId = 5, JobDetailsId = 5, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-3)), Quantity = 250, TotalPrice = 1250.25m, Status = "Processing", DeliveryMethod = "Courier", CustomerNote = "Please add fragile stickers on the package and confirm packaging quality." },
+                new JobOrder { Id = 11, CustomerId = 6, JobDetailsId = 6, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-15)), Quantity = 175, TotalPrice = 875.50m, Status = "Shipped", DeliveryMethod = "Pickup", CustomerNote = "Customer requests a call before pickup to ensure order is ready." },
+                new JobOrder { Id = 12, CustomerId = 7, JobDetailsId = 7, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-2)), Quantity = 100, TotalPrice = 500.00m, Status = "Pending", DeliveryMethod = "Courier", CustomerNote = "Confirm delivery address before shipment. Customer is moving to a new location." },
+                new JobOrder { Id = 13, CustomerId = 8, JobDetailsId = 8, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-7)), Quantity = 220, TotalPrice = 1100.00m, Status = "Processing", DeliveryMethod = "Courier", CustomerNote = "Customer requested expedited shipping. Ensure 2-day delivery." },
+                new JobOrder { Id = 14, CustomerId = 9, JobDetailsId = 9, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-9)), Quantity = 180, TotalPrice = 900.00m, Status = "Completed", DeliveryMethod = "Courier", CustomerNote = "Notify customer if any delays occur." },
+                new JobOrder { Id = 15, CustomerId = 10, JobDetailsId = 10, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), Quantity = 130, TotalPrice = 650.50m, Status = "Processing", DeliveryMethod = "Courier", CustomerNote = "Customer requested tracking information to be sent via SMS." },
 
-                new JobOrder { Id = 16, CustomerId = 11, JobDetailsId = 1, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-11)), Quantity = 160, TotalPrice = 800.00m, Status = "Completed", DeliveryMethod = "Pickup" },
-                new JobOrder { Id = 17, CustomerId = 12, JobDetailsId = 2, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-14)), Quantity = 270, TotalPrice = 1350.75m, Status = "Shipped", DeliveryMethod = "Courier" },
-                new JobOrder { Id = 18, CustomerId = 13, JobDetailsId = 3, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-16)), Quantity = 320, TotalPrice = 1600.00m, Status = "Completed", DeliveryMethod = "Courier" },
-                new JobOrder { Id = 19, CustomerId = 14, JobDetailsId = 4, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-18)), Quantity = 140, TotalPrice = 700.00m, Status = "Pending", DeliveryMethod = "Pickup" },
-                new JobOrder { Id = 20, CustomerId = 15, JobDetailsId = 5, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-6)), Quantity = 190, TotalPrice = 950.00m, Status = "Shipped", DeliveryMethod = "Courier" },
-                new JobOrder { Id = 21, CustomerId = 16, JobDetailsId = 6, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-13)), Quantity = 210, TotalPrice = 1050.00m, Status = "Completed", DeliveryMethod = "Courier" },
-                new JobOrder { Id = 22, CustomerId = 17, JobDetailsId = 7, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-17)), Quantity = 230, TotalPrice = 1150.00m, Status = "Processing", DeliveryMethod = "Courier" },
-                new JobOrder { Id = 23, CustomerId = 18, JobDetailsId = 8, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-20)), Quantity = 300, TotalPrice = 1500.00m, Status = "Shipped", DeliveryMethod = "Courier" },
-                new JobOrder { Id = 24, CustomerId = 19, JobDetailsId = 9, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-22)), Quantity = 250, TotalPrice = 1250.50m, Status = "Pending", DeliveryMethod = "Courier" },
-                new JobOrder { Id = 25, CustomerId = 20, JobDetailsId = 10, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-24)), Quantity = 120, TotalPrice = 600.00m, Status = "Processing", DeliveryMethod = "Courier" }
+                new JobOrder { Id = 16, CustomerId = 11, JobDetailsId = 1, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-11)), Quantity = 160, TotalPrice = 800.00m, Status = "Completed", DeliveryMethod = "Pickup", CustomerNote = "Customer prefers evening pickup after 5 PM." },
+                new JobOrder { Id = 17, CustomerId = 12, JobDetailsId = 2, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-14)), Quantity = 270, TotalPrice = 1350.75m, Status = "Shipped", DeliveryMethod = "Courier", CustomerNote = "Customer is very particular about packaging quality. Confirm before shipping." },
+                new JobOrder { Id = 18, CustomerId = 13, JobDetailsId = 3, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-16)), Quantity = 320, TotalPrice = 1600.00m, Status = "Completed", DeliveryMethod = "Courier", CustomerNote = "High-value shipment. Ensure signature upon delivery." },
+                new JobOrder { Id = 19, CustomerId = 14, JobDetailsId = 4, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-18)), Quantity = 140, TotalPrice = 700.00m, Status = "Pending", DeliveryMethod = "Pickup", CustomerNote = "Customer requested contact-free pickup." },
+                new JobOrder { Id = 20, CustomerId = 15, JobDetailsId = 5, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-6)), Quantity = 190, TotalPrice = 950.00m, Status = "Shipped", DeliveryMethod = "Courier", CustomerNote = "Customer will provide feedback after delivery." },
+                new JobOrder { Id = 21, CustomerId = 16, JobDetailsId = 6, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-13)), Quantity = 210, TotalPrice = 1050.00m, Status = "Completed", DeliveryMethod = "Courier", CustomerNote = "Include return label in case of damage." },
+                new JobOrder { Id = 22, CustomerId = 17, JobDetailsId = 7, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-17)), Quantity = 230, TotalPrice = 1150.00m, Status = "Processing", DeliveryMethod = "Courier", CustomerNote = "Customer prefers weekend delivery." },
+                new JobOrder { Id = 23, CustomerId = 18, JobDetailsId = 8, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-20)), Quantity = 300, TotalPrice = 1500.00m, Status = "Shipped", DeliveryMethod = "Courier", CustomerNote = "Customer asked for delivery to be delayed until next week." },
+                new JobOrder { Id = 24, CustomerId = 19, JobDetailsId = 9, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-22)), Quantity = 250, TotalPrice = 1250.50m, Status = "Pending", DeliveryMethod = "Courier", CustomerNote = "Customer prefers eco-friendly packaging." },
+                new JobOrder { Id = 25, CustomerId = 20, JobDetailsId = 10, OrderDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-24)), Quantity = 120, TotalPrice = 600.00m, Status = "Processing", DeliveryMethod = "Courier", CustomerNote = "Requesting a discount voucher for future purchases with this order." }
             );
 
         modelBuilder.Entity<UserModel>().HasData(

@@ -15,7 +15,8 @@ public static class JobOrderMapping
             i.Quantity,
             i.TotalPrice,
             i.Status,
-            i.DeliveryMethod)).ToList();
+            i.DeliveryMethod,
+            i.CustomerNote)).ToList();
 
         return jobOrdersDto;
     }
@@ -32,7 +33,8 @@ public static class JobOrderMapping
             jobOrder.Quantity,
             jobOrder.TotalPrice,
             jobOrder.Status,
-            jobOrder.DeliveryMethod
+            jobOrder.DeliveryMethod,
+            jobOrder.CustomerNote
             );
     }
 
@@ -48,7 +50,8 @@ public static class JobOrderMapping
             Quantity = jobOrder.Quantity,
             TotalPrice = jobOrder.TotalPrice,
             Status = jobOrder.Status,
-            DeliveryMethod = jobOrder.DeliveryMethod
+            DeliveryMethod = jobOrder.DeliveryMethod,
+            CustomerNote = jobOrder.CustomerNote
         };
     }
 
@@ -65,7 +68,8 @@ public static class JobOrderMapping
             Quantity = jobOrder.Quantity,
             TotalPrice = jobOrder.TotalPrice,
             Status = jobOrder.Status,
-            DeliveryMethod = jobOrder.DeliveryMethod
+            DeliveryMethod = jobOrder.DeliveryMethod,
+            CustomerNote = jobOrder.CustomerNote
         };
     }
 }

@@ -78,7 +78,8 @@ else
                 <option value="In Progress">In Progress</option>
                 <option value="Completed">Completed</option>
             </InputSelect>
-
+            <label for="customerNote">Customer Note</label>
+            <InputTextArea class="form-control comment-box" id="name" @bind-Value="jobOrderEntity.CustomerNote" />
             <br />
             <button class="btn btn-success" type="submit">Save Changes</button>
             <a role="button" class="btn btn-danger" href="/joborders">Cancel</a>
@@ -125,7 +126,8 @@ else
                         Quantity = jobOrderViewModel.Quantity,
                         TotalPrice = jobOrderViewModel.TotalPrice,
                         Status = jobOrderViewModel.Status,
-                        DeliveryMethod = jobOrderViewModel.DeliveryMethod
+                        DeliveryMethod = jobOrderViewModel.DeliveryMethod,
+                        CustomerNote = jobOrderViewModel.CustomerNote
                     };
             }
             catch

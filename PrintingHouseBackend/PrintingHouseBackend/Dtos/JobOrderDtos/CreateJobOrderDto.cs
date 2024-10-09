@@ -11,5 +11,6 @@ public record class CreateJobOrderDto(
     int Quantity,
     decimal TotalPrice,
     string Status,
-    string DeliveryMethod
+    string DeliveryMethod,
+    string CustomerNote
     );

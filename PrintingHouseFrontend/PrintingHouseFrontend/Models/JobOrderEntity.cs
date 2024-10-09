@@ -29,4 +29,6 @@ public class JobOrderEntity
 
     [Required(ErrorMessage = "Delivery Method is required.")]
     public string? DeliveryMethod { get; set; }
+
+    public string CustomerNote { get; set; }
 }

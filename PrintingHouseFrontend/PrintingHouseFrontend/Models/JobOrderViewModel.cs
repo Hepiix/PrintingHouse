@@ -10,4 +10,5 @@ public class JobOrderViewModel
     public decimal TotalPrice { get; set; }
     public string? Status { get; set; }
     public string? DeliveryMethod { get; set; }
+    public string? CustomerNote { get; set; }
 }
