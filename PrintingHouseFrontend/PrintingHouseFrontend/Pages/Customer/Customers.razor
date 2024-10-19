@@ -15,15 +15,21 @@ else
     else
     {
         <div>
-
             <table class="table table-dark table-hover table-bordered caption-top table-align-middle">
                 <caption>List of all customers
+                    <div class="row">
+                        <div class="col">
                     <InputSelect @bind-Value="currentSortColumn" class="form-select" @onfocusout="() => SortTable(currentSortColumn)">
                         <option value="">Select Sort Option</option>
                         <option value="Id">Id</option>
                         <option value="Name">Name</option>
                         <option value="Surname">Surname</option>
                     </InputSelect>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-primary">Apply</button>
+                        </div>
+                    </div>
                 </caption>
                 <thead class="table-light align-middle">
                 <th class="text-center" scope="col" style="width: 5%;">Id</th>
