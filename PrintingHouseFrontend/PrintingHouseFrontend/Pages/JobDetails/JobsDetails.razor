@@ -18,12 +18,29 @@ else
         <table class="table table-dark table-hover table-bordered caption-top table-align-middle">
             <caption>
                 List of all job details
+                <div class="row row-cols-auto">
+                    <div class="col">
                 <InputSelect @bind-Value="currentSortColumn" class="form-select" @onfocusout="() => SortTable(currentSortColumn)">
                     <option value="">Select Sort Option</option>
                     <option value="Pattern">Pattern</option>
                     <option value="Id">Id</option>
                     <option value="Name">Name</option>
                 </InputSelect>
+                    </div>
+                    <div class="col">
+                        @if (isAscending)
+                        {
+                            <i class="bi bi-caret-down-fill h4" @onclick="() => isAscending = false"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-caret-up-fill h4" @onclick="() => isAscending = true"></i>
+                        }
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary" @onclick="() => SortTable(currentSortColumn)">Apply</button>
+                    </div>
+                </div>
             </caption>
             <thead class="table-light align-middle">
             <th class="text-center" style="width: 5%;">Id</th>
@@ -90,13 +107,8 @@ else
 
     private void SortTable(string columnName)
     {
-        if (currentSortColumn == columnName)
-            isAscending = !isAscending;
-        else
-        {
+        if (currentSortColumn != columnName)
             currentSortColumn = columnName;
-            isAscending = true;
-        }
 
         switch (columnName)
         {

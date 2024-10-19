@@ -1,4 +1,5 @@
 ﻿@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
 
 @inherits LayoutComponentBase
 @if(username is null)
@@ -15,19 +16,19 @@
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/customers">Customers</a>
+                        <a class="nav-link active" aria-current="page" href="/customers">Customers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/jobsdetails">Jobs Details</a>
+                        <a class="nav-link active" href="/jobsdetails">Jobs Details</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/joborders">Job Orders</a>
+                        <a class="nav-link active" href="/joborders">Job Orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
+                        <a class="nav-link active" href="/login">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
+                        <a class="nav-link active" href="/register">Register</a>
                     </li>
                 </ul>
                 <span class="navbar-text">
@@ -60,9 +61,14 @@ else
                         <a class="nav-link" href="/joborders">Job Orders</a>
                     </li>
                 </ul>
-                <span class="navbar-text">
+                <span class="navbar-text me-3">
                     Welcome, @username!
                 </span>
+                <span class="nav-link">
+                    <button class="btn btn-secondary" @onclick="Logout">Logout</button>
+                </span>
+                
+                
             </div>
         </div>
     </nav>
@@ -89,5 +95,12 @@ else
                 Console.WriteLine("xd");
             }
         }
+    }
+
+    private async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("username");
+        await LocalStorage.RemoveItemAsync("token");
+        NavigationManager.Refresh();
     }
 }
