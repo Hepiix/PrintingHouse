@@ -48,7 +48,7 @@ else
                 <th class="text-center" scope="col" style="width: 12%;">Phone Number</th>
                 <th>Email</th>
                 <th>Address</th>
-                <th class="text-center" scope="col" style="width: 12%;"><a href="editcustomers/" class="btn btn-success"><i class="bi bi-person-plus"></i> Add new</a></th>
+                <th class="text-center" scope="col" style="width: 12%;"><a href="customers/editcustomers/" class="btn btn-success"><i class="bi bi-person-plus"></i> Add new</a></th>
                 </thead>
                 <tbody class="table-group-divider">
                     @foreach (var customer in customers)
@@ -61,7 +61,7 @@ else
                             <td>@customer.Email</td>
                             <td>@customer.StreetAddress @customer.City @customer.State @customer.PostalCode @customer.Country</td>
                             <td class="text-center">
-                                <a href="editcustomers/@customer.Id" class="btn btn-primary">
+                                <a href="customers/editcustomers/@customer.Id" class="btn btn-primary">
                                     <i class="bi bi-pencil"></i>
                                 </a> <button class="btn btn-danger"
                                              data-bs-toggle="modal"

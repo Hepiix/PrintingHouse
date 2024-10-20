@@ -51,7 +51,7 @@ else
             <th>Color Mode</th>
             <th>Print Sides</th>
             <th>Unit Price</th>
-            <th class="text-center" style="width: 12%;"><a href="editjobdetails/" class="btn btn-success"><i class="bi bi-person-plus"></i>Add new</a></th>
+            <th class="text-center" style="width: 12%;"><a href="jobsdetails/editjobdetails/" class="btn btn-success"><i class="bi bi-person-plus"></i>Add new</a></th>
             </thead>
             <tbody class="table-group-divider">
                 @foreach (var jobDetails in jobsDetails)
@@ -66,7 +66,7 @@ else
                         <td>@jobDetails.PrintSides</td>
                         <td>@jobDetails.UnitPrice</td>
                         <td class="text-center">
-                            <a href="editjobdetails/@jobDetails.Id" class="btn btn-primary"><i class="bi bi-pencil"></i></a>
+                            <a href="jobsdetails/editjobdetails/@jobDetails.Id" class="btn btn-primary"><i class="bi bi-pencil"></i></a>
                             <button class="btn btn-danger"
                                     data-bs-toggle="modal"
                                     data-bs-target="@GetDeleteModalId(jobDetails)">

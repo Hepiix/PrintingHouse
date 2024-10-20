@@ -13,22 +13,22 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        <a class="@GetNavLinkClass("/")" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/customers">Customers</a>
+                        <a class="@GetNavLinkClass("customers")" href="/customers">Customers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/jobsdetails">Jobs Details</a>
+                        <a class="@GetNavLinkClass("jobsdetails")" href="/jobsdetails">Jobs Details</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/joborders">Job Orders</a>
+                        <a class="@GetNavLinkClass("joborders")" href="/joborders">Job Orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/login">Login</a>
+                        <a class="@GetNavLinkClass("login")" href="/login">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/register">Register</a>
+                        <a class="@GetNavLinkClass("register")" href="/register">Register</a>
                     </li>
                 </ul>
                 <span class="navbar-text">
@@ -49,16 +49,16 @@ else
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        <a class="@GetNavLinkClass("/")" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/customers">Customers</a>
+                        <a class="@GetNavLinkClass("customers")" href="/customers">Customers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/jobsdetails">Jobs Details</a>
+                        <a class="@GetNavLinkClass("jobsdetails")" href="/jobsdetails">Jobs Details</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/joborders">Job Orders</a>
+                        <a class="@GetNavLinkClass("joborders")" href="/joborders">Job Orders</a>
                     </li>
                 </ul>
                 <span class="navbar-text me-3">
@@ -80,6 +80,7 @@ else
 
 @code {
     string username;
+    Uri uri;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -102,5 +103,29 @@ else
         await LocalStorage.RemoveItemAsync("username");
         await LocalStorage.RemoveItemAsync("token");
         NavigationManager.Refresh();
+    }
+
+    private string GetNavLinkClass(string link)
+    {
+        uri = new Uri(NavigationManager.Uri);
+        var segments = uri.Segments;
+        if (segments.Length > 1)
+        {
+            if (link == segments[1].TrimEnd('/'))
+            {
+                return "nav-link active";
+            }
+            else
+            {
+                return "nav-link";
+            }
+        }
+        else
+        {
+            if (link != segments[0])
+                return "nav-link";
+            else
+                return "nav-link active";
+        }
     }
 }
