@@ -55,4 +55,4 @@ The project is split into two services:
 
 ## 🚀 Live Demo
 
-Check out the live demo of the project here: [Live Demo]([https://your-live-demo-url.com](http://srv15.mikr.us:20218/))
+Check out the live demo of the project here: [Live Demo](http://srv15.mikr.us:20218/)
