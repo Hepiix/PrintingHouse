@@ -1,4 +1,4 @@
-# 🖨️ Printing House Management System
+# 🖨️ PrintingHouse
 
 This is a **Printing House Management System** built using **C# ASP.NET** with **Blazor** for the frontend, **Bootstrap** for styling, and **MSSQL** as the database. The project is split into two services: one for the backend API and another for the frontend. This system allows users to log in, register, and manage customers, job orders, and job details.
 
